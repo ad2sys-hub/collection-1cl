@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1CL Collection - Heritage Premium</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <header>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <a href="#" class="logo">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4l6 12H6l6-12z"/></svg>
+                1CL
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#catalog">Collection</a></li>
+                    <li><a href="#about">Héritage</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>L'ÉLÉGANCE ABSOLUE</h1>
+        <p>Découvrez la collection 1CL. Une fusion parfaite entre matières nobles, coupe haute couture et design avant-gardiste.</p>
+    </section>
+
+    <main class="container" id="catalog">
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">Tous</button>
+            <button class="filter-btn" data-filter="PUL">Pulls</button>
+            <button class="filter-btn" data-filter="TSH">T-Shirts</button>
+            <button class="filter-btn" data-filter="JOG">Joggers</button>
+            <button class="filter-btn" data-filter="VST">Vestes</button>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+            <!-- Populated by JS -->
+        </div>
+    </main>
+
+    <!-- Modal for details -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-gallery">
+                <img id="modalImg" src="" alt="Product Detail">
+            </div>
+            <div class="modal-details">
+                <div id="modalCat" class="product-cat">Catégorie</div>
+                <h2 id="modalTitle" class="modal-title">Nom du Produit</h2>
+                <div id="modalPrice" class="modal-price">00,00 €</div>
+                <p id="modalDesc" class="modal-desc">
+                    Matière noble, finition haute couture. Conçu avec une exigence absolue, ce vêtement de la collection capsule 1CL incarne l'élégance discrète.
+                </p>
+                <div class="modal-actions">
+                    <button class="btn-primary">Ajouter à la Collection</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="padding: 5rem 0; border-top: 1px solid var(--glass-border); text-align: center; color: var(--text-dim); font-size: 0.9rem;">
+        <div class="container">
+            <p>&copy; 2026 1CL COLLECTION. TOUS DROITS RÉSERVÉS.</p>
+        </div>
+    </footer>
+
+    <script>
+        const products = [
+            // JOGGERS
+            { id: 1, type: "JOG", name: "Jogging Heritage Noir", color: "Noir", price: 95, img: "1CL-JOG-BLK.jpg.png" },
+            { id: 2, type: "JOG", name: "Jogging Heritage Or", color: "Or", price: 110, img: "1CL-JOG-GLD.jpg.png" },
+            { id: 3, type: "JOG", name: "Jogging Heritage Vert", color: "Vert", price: 95, img: "1CL-JOG-GRN.jpg.png" },
+            { id: 4, type: "JOG", name: "Jogging Heritage Rouge", color: "Rouge", price: 95, img: "1CL-JOG-RED.jpg.png" },
+            { id: 5, type: "JOG", name: "Jogging Heritage Crimson", color: "Rouge Intense", price: 95, img: "1CL-JOG-RED2.jpeg.png" },
+            { id: 6, type: "JOG", name: "Jogging Heritage Blanc", color: "Blanc", price: 95, img: "CL-JOG-WHI.jpg.png" },
+            
+            // PULLS
+            { id: 7, type: "PUL", name: "Pull Premium Beige", color: "Beige", price: 120, img: "1CL-PUL-BEI.jpg.png" },
+            { id: 8, type: "PUL", name: "Pull Premium Noir", color: "Noir", price: 120, img: "1CL-PUL-BLK1.jpg.png" },
+            { id: 9, type: "PUL", name: "Pull Premium Or", color: "Or", price: 135, img: "1CL-PUL-GLD.jpg.png" },
+            { id: 10, type: "PUL", name: "Pull Premium Gris", color: "Gris", price: 120, img: "1CL-PUL-GREY.jpg.png" },
+            { id: 12, type: "PUL", name: "Pull Premium Gris (Detail 1)", color: "Gris", price: 120, img: "1CL-PUL-GREY1.jpg.png" },
+            { id: 13, type: "PUL", name: "Pull Premium Gris (Detail 2)", color: "Gris", price: 120, img: "1CL-PUL-GREY2.jpg.png" },
+            { id: 14, type: "PUL", name: "Pull Premium Vert (V1)", color: "Vert", price: 120, img: "1CL-PUL-GRN1.jpg.png" },
+            { id: 15, type: "PUL", name: "Pull Premium Vert (V2)", color: "Vert", price: 120, img: "1CL-PUL-GRN2.jpg.png" },
+            { id: 16, type: "PUL", name: "Pull Premium Vert (Classic)", color: "Vert", price: 120, img: "1CL-PUL-Grn.jpg.png" },
+            { id: 17, type: "PUL", name: "Pull Premium Rouge", color: "Rouge", price: 120, img: "1CL-PUL-RED.jpg.png" },
+            
+            // T-SHIRTS
+            { id: 18, type: "TSH", name: "T-Shirt Noble Noir", color: "Noir", price: 65, img: "1CL-TSH-BLK.jpg.png" },
+            { id: 19, type: "TSH", name: "T-Shirt Noble Bleu", color: "Bleu", price: 65, img: "1CL-TSH-BLU.jpg.png" },
+            { id: 20, type: "TSH", name: "T-Shirt Noble Or", color: "Or", price: 75, img: "1CL-TSH-GLD.jpg.png" },
+            { id: 21, type: "TSH", name: "T-Shirt Noble Vert", color: "Vert", price: 65, img: "1CL-TSH-GRN.jpg.png" },
+            { id: 22, type: "TSH", name: "T-Shirt Noble Blanc", color: "Blanc", price: 65, img: "1CL-TSH-WHI.jpg.png" },
+            
+            // VESTES
+            { id: 23, type: "VST", name: "Veste Zippée Noir", color: "Noir", price: 130, img: "1CL-VST-BLK.jpg.png" },
+            { id: 24, type: "VST", name: "Veste Zippée Noir (V2)", color: "Noir", price: 130, img: "1CL-VST-BLK2.jpg.png" },
+            { id: 25, type: "VST", name: "Veste Zippée Or", color: "Or", price: 145, img: "1CL-VST-GLD.jpg.png" },
+            { id: 26, type: "VST", name: "Veste Zippée Vert", color: "Vert", price: 130, img: "1CL-VST-GRN.jpg.png" },
+            { id: 27, type: "VST", name: "Veste Zippée Rouge", color: "Rouge", price: 130, img: "1CL-VST-RED.jpg.png" },
+            { id: 28, type: "VST", name: "Veste Zippée Blanc", color: "Blanc", price: 130, img: "1CL-VST-WHI.jpg.png" }
+        ];
+
+
+        const grid = document.getElementById('productGrid');
+        const modal = document.getElementById('productModal');
+        const filters = document.querySelectorAll('.filter-btn');
+
+        function renderProducts(filter = 'all') {
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? products : products.filter(p => p.type === filter);
+            
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-image">
+                        <img src="${p.img}" alt="${p.name}" onerror="this.src='https://placehold.co/800x800/1a1a1a/ffffff?text=${p.type}'">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-cat">${getTypeLabel(p.type)}</div>
+                        <h3 class="product-name">${p.name}</h3>
+                        <div class="product-price">${p.price},00 €</div>
+                    </div>
+                `;
+                card.onclick = () => openModal(p);
+                grid.appendChild(card);
+            });
+        }
+
+        function getTypeLabel(type) {
+            const labels = { PUL: "Pull / Sweat", TSH: "T-Shirt", JOG: "Jogging", VST: "Veste" };
+            return labels[type] || type;
+        }
+
+        function openModal(p) {
+            document.getElementById('modalImg').src = p.img;
+            document.getElementById('modalCat').textContent = getTypeLabel(p.type);
+            document.getElementById('modalTitle').textContent = p.name;
+            document.getElementById('modalPrice').textContent = `${p.price},00 €`;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        document.querySelector('.modal-close').onclick = () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        window.onclick = (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        };
+
+        filters.forEach(btn => {
+            btn.onclick = () => {
+                filters.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderProducts(btn.dataset.filter);
+            };
+        });
+
+        // Initialize
+        renderProducts();
+    </script>
+</body>
+</html>
