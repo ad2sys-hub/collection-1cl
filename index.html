@@ -6,7 +6,8 @@
     <title>1CL Collection - Intelligent Business Hub</title>
     <link rel="stylesheet" href="index.css">
     <link rel="icon" type="image/png" href="logo CL v.1.gold.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -14,6 +15,35 @@
     <div class="voice-console" id="voiceConsole">
         <div class="voice-status-pulse"></div>
         <span id="voiceText" style="font-family:'Montserrat', sans-serif; font-size:0.8rem; letter-spacing:1px; color:var(--primary);">LISTENING FOR COMMANDS...</span>
+    </div>
+
+    <!-- Sovereign Intelligence AI Agent -->
+    <div class="agent-bubble" id="agentBubble" onclick="toggleAgent()">
+        <i class="fa-solid fa-brain" style="color:#000; font-size:1.5rem;"></i>
+    </div>
+
+    <div class="agent-chat" id="agentChat">
+        <div class="agent-chat-header">
+            <h4>SOVEREIGN IA</h4>
+            <i class="fa-solid fa-xmark" onclick="toggleAgent()" style="cursor:pointer; color:var(--primary);"></i>
+        </div>
+        <div class="agent-chat-body" id="agentChatBody">
+            <div class="agent-msg msg-ai">
+                Bienvenue dans l'écosystème **1CL**. Je suis **The Curator**, votre intelligence souveraine. Comment puis-je vous guider à travers nos fonctions d'élite ?
+            </div>
+            <div class="agent-quick-links">
+                <div class="quick-btn" onclick="askAgent('Vault')">Accès Vault</div>
+                <div class="quick-btn" onclick="askAgent('Logistique')">Live Logistics</div>
+                <div class="quick-btn" onclick="askAgent('Contrats')">Forge Contrats</div>
+                <div class="quick-btn" onclick="askAgent('Atelier')">Mode Atelier</div>
+            </div>
+        </div>
+        <div class="agent-chat-footer">
+            <input type="text" class="agent-input" id="agentInput" placeholder="Posez une question..." onkeypress="if(event.key==='Enter') sendAgentMsg()">
+            <button class="btn-primary" style="padding:10px 15px; border-radius:10px;" onclick="sendAgentMsg()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
     </div>
 
     <header>
@@ -428,6 +458,7 @@
         });
 
         const playlist = [
+            { title: "YOUR ACTIONS KILL ME", artist: "Chawblick", file: "mp3/YOUR ACTIONS KILL ME.mp3" },
             { title: "There Is Just a Simple Thing", artist: "Chawblick", file: "mp3/There Is Just a Simple Thing.mp3" },
             { title: "I See In Her Eyes", artist: "Chawblick", file: "mp3/i see in her eyes.mp3" },
             { title: "She Is My Boo", artist: "Chawblick", file: "mp3/she is my boo.mp3" },
@@ -491,6 +522,87 @@
             loupe.style.backgroundPosition = `-${x * 3 - 75}px -${y * 3 - 75}px`;
         });
 
+        // --- Sovereign Intelligence AI Enginge ---
+        const knowledgeBase = {
+            "vault": {
+                ans: "Le **Vault** est notre zone sécurisée exclusive. Accès : Entrez `Digital Key` dans le portail sous le Cinéma.",
+                action: () => document.getElementById('vaultPortal').scrollIntoView({ behavior: 'smooth' })
+            },
+            "logistique": {
+                ans: "La **Carte Logistique** montre les flux de stock en temps réel entre Milan et nos Hubs. Visible dans le Dashboard Admin.",
+                action: () => { toggleAdmin(); document.getElementById('logisticsContent').scrollIntoView({ behavior: 'smooth' }); }
+            },
+            "contrats": {
+                ans: "La **Forge de Contrats** crée des documents PDF certifiés pour les clients, transporteurs et fournisseurs. Disponible via le menu Admin.",
+                action: () => toggleAdmin()
+            },
+            "signature": {
+                ans: "Le **Sovereign Pad** permet une signature électronique manuscrite de haute fidélité intégrée directement dans nos contrats PDF.",
+                action: () => toggleAdmin()
+            },
+            "atelier": {
+                ans: "Le **Mode Atelier** active une loupe HD pour inspecter le tissage premium (280-350g) de chaque pièce. Disponible dans les détails produit.",
+                action: () => { if(currentProduct) openModal(currentProduct); }
+            },
+            "audio": {
+                ans: "Le **Media Hub** synchronise notre playlist exclusive avec votre station Spotify. Égaliseur dynamique activé dès la lecture.",
+                action: () => togglePlayer()
+            },
+            "cinema": {
+                ans: "Le **Cinéma 1CL** diffuse nos campagnes publicitaires officielles en haute résolution.",
+                action: () => document.querySelector('.cinema-section').scrollIntoView({ behavior: 'smooth' })
+            },
+            "taille": {
+                ans: "Le **Guide des Tailles** bilingue est disponible dans chaque fiche produit pour garantir un fit parfait.",
+                action: () => { if(currentProduct) openSizeGuide(); }
+            },
+            "voix": {
+                ans: "La **Console Voice** permet de piloter le site par commandes vocales : 'Open Admin', 'Next Track', 'Vault'.",
+                action: () => document.getElementById('voiceConsole').style.display = 'flex'
+            }
+        };
+
+        function toggleAgent() { document.getElementById('agentChat').classList.toggle('active'); }
+
+        function askAgent(key) {
+            const k = key.toLowerCase();
+            const entry = knowledgeBase[k] || { ans: "Je ne connais pas encore cette fonction. Pouvez-vous préciser ?" };
+            addAgentMsg(entry.ans, 'ai');
+            if(entry.action) entry.action();
+            
+            // Auto-learning concept
+            let memory = JSON.parse(localStorage.getItem('aiMemory') || '{}');
+            memory[k] = (memory[k] || 0) + 1;
+            localStorage.setItem('aiMemory', JSON.stringify(memory));
+        }
+
+        function addAgentMsg(text, type) {
+            const body = document.getElementById('agentChatBody');
+            const msg = document.createElement('div');
+            msg.className = `agent-msg msg-${type}`;
+            msg.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            body.appendChild(msg);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function sendAgentMsg() {
+            const input = document.getElementById('agentInput');
+            const text = input.value.trim();
+            if(!text) return;
+            addAgentMsg(text, 'user');
+            input.value = '';
+            
+            let found = false;
+            for(let k in knowledgeBase) {
+                if(text.toLowerCase().includes(k)) {
+                    askAgent(k);
+                    found = true;
+                    break;
+                }
+            }
+            if(!found) setTimeout(() => addAgentMsg("Je recherche l'information dans les archives souveraines... Pouvez-vous m'interroger sur le Vault, la Logistique ou l'Atelier ?", 'ai'), 600);
+        }
+
         // --- Voice Orchestration ---
         if ('webkitSpeechRecognition' in window) {
             const recognition = new webkitSpeechRecognition();
@@ -498,6 +610,13 @@
             recognition.onresult = (e) => {
                 const cmd = e.results[e.results.length - 1][0].transcript.toLowerCase();
                 document.getElementById('voiceText').innerText = `EXECUTING: ${cmd.toUpperCase()}`;
+                
+                // Smart Voice Bridge to AI Agent
+                if(cmd.includes('help') || cmd.includes('aide')) {
+                    toggleAgent();
+                    addAgentMsg("Je vous ai entendu. Comment puis-je vous aider ?", 'ai');
+                }
+
                 if(cmd.includes('open admin') || cmd.includes('gestion')) toggleAdmin();
                 if(cmd.includes('close player')) closeHub();
                 if(cmd.includes('next track')) audioAction('next');
