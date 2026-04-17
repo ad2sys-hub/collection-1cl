@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1CL Collection - Business Ecosystem (EMS@Path)</title>
+    <title>1CL Collection - Intelligent Business Hub</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="icon" type="image/png" href="logo CL v.1.gold.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -18,11 +19,11 @@
             <nav>
                 <ul>
                     <li><a href="#catalog" data-t="nav_collection">Collection</a></li>
-                    <li><a href="#about" data-t="nav_heritage">Heritage</a></li>
+                    <li><a href="#contact" data-t="nav_contact" id="contactTab">Contact</a></li>
                 </ul>
             </nav>
             <div style="display: flex; align-items: center;">
-                <button class="admin-btn" onclick="toggleEMS()">Gestion / Admin</button>
+                <button class="admin-btn" id="adminToggle" onclick="toggleAdmin()">Gestion / Admin</button>
                 <div class="lang-switcher">
                     <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
                     <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
@@ -31,79 +32,75 @@
         </div>
     </header>
 
-    <!-- EMS@Path Dashboard Sidebar -->
-    <div class="ems-sidebar" id="emsSidebar">
-        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 2rem;">
-            <h2 style="font-size: 1.2rem; color: var(--primary);">EMS@Path Dashboard</h2>
-            <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="toggleEMS()"></i>
-        </div>
-
-        <!-- Module: Rentabilité -->
-        <div class="ems-module">
-            <div class="module-header">
-                <span class="module-title">Rentabilité & Timeline</span>
-                <i class="fa-solid fa-chart-line"></i>
-            </div>
-            <table class="data-table" id="rentTable">
-                <tr><th>Break Even</th> <td id="emsBreakEven">0 Units</td></tr>
-                <tr><th>Objectif Mensuel</th> <td id="emsGoal">0 €</td></tr>
-                <tr><th>Marge Nette</th> <td id="emsMargin" style="color:var(--primary);">0%</td></tr>
-            </table>
-        </div>
-
-        <!-- Module: Fabrication -->
-        <div class="ems-module">
-            <div class="module-header">
-                <span class="module-title">Catalogue Fabrication</span>
-                <i class="fa-solid fa-industry"></i>
-            </div>
-            <div id="fabricDetails" style="font-size: 0.8rem; color: var(--text-dim);">
-                <p>Fournisseur: <b id="emsSupplier" style="color:white;">-</b></p>
-                <p>Textile: <b id="emsTextile" style="color:white;">-</b></p>
-                <p>Distributeur: <b id="emsDist" style="color:white;">-</b></p>
+    <!-- Draggable Elite Audio Player -->
+    <div class="audio-player-elite" id="elitePlayer" onmousedown="dragStart(event)">
+        <div class="player-header">
+            <span>ELITE AUDIO ENGINE</span>
+            <div style="display:flex; gap: 10px;">
+                <i class="fa-solid fa-minus" title="Hide" style="cursor:pointer;" onclick="togglePlayer()"></i>
+                <i class="fa-solid fa-xmark" title="Close" style="cursor:pointer;" onclick="closePlayer()"></i>
             </div>
         </div>
+        
+        <div class="audio-controls-elite">
+            <div class="track-info-elite">
+                <span class="track-name" id="eliteTrackName">No Track Loaded</span>
+                <span class="track-artist">1CL x Chawblick</span>
+            </div>
+            
+            <div class="playback-controls">
+                <button class="btn-icon" onclick="audioAction('prev')"><i class="fa-solid fa-backward-step"></i></button>
+                <button class="btn-icon btn-play-large" onclick="audioAction('play')"><i class="fa-solid fa-circle-play" id="elitePlayIcon"></i></button>
+                <button class="btn-icon" onclick="audioAction('next')"><i class="fa-solid fa-forward-step"></i></button>
+            </div>
 
-        <!-- Module: MPC SRV-ANES Journal de Bord -->
-        <div class="ems-module">
-            <div class="module-header">
-                <span class="module-title">Journal de Bord (MPC SRV-ANES)</span>
-                <i class="fa-solid fa-terminal"></i>
+            <div class="volume-container">
+                <i class="fa-solid fa-volume-low" style="font-size:0.7rem;"></i>
+                <input type="range" class="vol-slider" min="0" max="1" step="0.1" value="0.8" oninput="setVolume(this.value)">
+                <i class="fa-solid fa-volume-high" style="font-size:0.7rem;"></i>
             </div>
-            <div class="workflow-log" id="workflowLog">
-                <div class="log-entry"><span>[SYS]</span> EMS@Path Engine Online...</div>
+
+            <div style="display:flex; justify-content: space-around; margin-top: 1rem; border-top: 1px solid var(--glass-border); padding-top: 1rem;">
+                <i class="fa-solid fa-magnifying-glass" title="Search External" style="cursor:pointer;" onclick="toggleSearch()"></i>
+                <i class="fa-solid fa-plus-circle" title="Add Track" style="cursor:pointer;" onclick="addTrackPrompt()"></i>
+                <i class="fa-solid fa-trash-can" title="Clear Playlist" style="cursor:pointer;" onclick="clearPlaylist()"></i>
             </div>
-            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.6rem;" onclick="simulateWorkflow('promote')">Promouvoir</button>
-                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.6rem;" onclick="simulateWorkflow('workflow')">Workflow Auto</button>
+
+            <div class="playlist-manager" id="elitePlaylist">
+                <!-- Tracks -->
             </div>
         </div>
     </div>
 
-    <!-- Audio Engine Floating Player -->
-    <div class="audio-player-floating" id="audioPlayer">
-        <div class="audio-controls">
-            <button class="audio-btn" onclick="prevTrack()"><i class="fa-solid fa-backward-step"></i></button>
-            <button class="audio-btn" onclick="togglePlay()"><i class="fa-solid fa-play" id="playIcon"></i></button>
-            <button class="audio-btn" onclick="nextTrack()"><i class="fa-solid fa-forward-step"></i></button>
-        </div>
-        <div class="audio-info">
-            <div class="audio-title" id="trackTitle">N/A</div>
-            <div class="audio-artist">Chawblick Music Engine</div>
-        </div>
-        <div class="audio-controls">
-            <button class="audio-btn" onclick="simulateWorkflow('share')"><i class="fa-solid fa-share-nodes"></i></button>
-            <button class="audio-btn" title="Promote to Chawblick" onclick="simulateWorkflow('promote')"><i class="fa-solid fa-music"></i></button>
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search Masterpiece...">
+            <div class="search-results">
+                <a href="#" class="search-link" onclick="externalSearch('yt')"><i class="fa-brands fa-youtube" style="color:#f00;"></i> YouTube Search</a>
+                <a href="#" class="search-link" onclick="externalSearch('spotify')"><i class="fa-brands fa-spotify" style="color:#1db954;"></i> Spotify Hub</a>
+                <a href="#" class="search-link" onclick="externalSearch('sc')"><i class="fa-brands fa-soundcloud" style="color:#ff5500;"></i> SoundCloud Stream</a>
+                <a href="#" class="search-link" onclick="externalSearch('suno')"><i class="fa-solid fa-wave-square" style="color:#fff;"></i> Suno AI Generator</a>
+            </div>
+            <button class="btn-primary" style="margin-top:4rem;" onclick="toggleSearch()">Back to 1CL</button>
         </div>
     </div>
 
     <section class="hero">
-        <h1 data-t="hero_title">1CL COLLECTION</h1>
-        <p data-t="hero_subtitle">Ecosystème Fashion intégré EMS@Path & MPC SRV-ANES.</p>
+        <h1 data-t="hero_title">ABSOLUTE ELEGANCE</h1>
+        <p data-t="hero_subtitle">Ecosystème Fashion intelligent EMS@Path Orchestration.</p>
+        <button class="btn-primary" style="margin-top:2rem;" onclick="togglePlayer()">Open Audio Hub</button>
     </section>
 
+    <!-- Sponsor Banner -->
+    <div class="container">
+        <div class="sponsor-banner">
+            <div class="sponsor-logo">PRESENTED BY ONESHOPLINK GLOBAL</div>
+        </div>
+    </div>
+
     <main class="container" id="catalog">
-        <div class="filters">
+        <div class="filters" id="filterContainer">
             <button class="filter-btn active" data-filter="all" data-t="filter_all">All</button>
             <button class="filter-btn" data-filter="PUL">Pulls</button>
             <button class="filter-btn" data-filter="TSH">T-Shirts</button>
@@ -113,6 +110,36 @@
         <div class="product-grid" id="productGrid"></div>
     </main>
 
+    <!-- Supplier Intelligence Portal (Restricted) -->
+    <section class="container" id="heritageSection" style="display:none;">
+        <div class="supplier-portal">
+            <h2 style="color:var(--primary); text-transform:uppercase; letter-spacing:5px;">Catalogue Fournisseur Intelligent</h2>
+            <p style="color:var(--text-dim); margin-bottom: 2rem;">Workflows EMS@Path : Prévisions de stock et sorties prévues.</p>
+            
+            <div class="supplier-grid" id="supplierGrid">
+                <!-- Dynamic Stats -->
+            </div>
+
+            <div class="ems-module" style="margin-top:4rem;">
+                <div class="module-header"><span class="module-title">Journal de Bord (MPC Server Sync)</span></div>
+                <div class="workflow-log" id="workflowLog"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container slogan-hero">
+        <h3 style="color:var(--primary); font-size: 2rem;">"The Real Link"</h3>
+        <p style="color:var(--text-dim); max-width: 600px; margin: 1rem auto;">A message for our future clients: 1CL isn't just clothing, it's an orchestration of luxury and technology. Join the heritage.</p>
+    </div>
+
+    <section class="contact-section" id="contact" style="display:block;">
+        <div class="container contact-card">
+            <h3 data-t="contact_title">Contact 1CL</h3>
+            <p style="color:var(--text-dim); margin-bottom: 2rem;">Assistance exclusive & Partenariats MPC.</p>
+            <a href="mailto:randymcmillan29@gmail.com" class="contact-email">randymcmillan29@gmail.com</a>
+        </div>
+    </section>
+
     <!-- Modal for details -->
     <div class="modal" id="productModal">
         <div class="modal-content">
@@ -121,22 +148,23 @@
                 <img id="modalImg" src="" alt="Product Detail">
             </div>
             <div class="modal-details">
-                <div id="modalCat" class="product-cat">Category</div>
-                <h2 id="modalTitle" class="modal-title">Product Name</h2>
-                <div id="modalPrice" class="modal-price">00.00 €</div>
+                <div id="modalCat" class="product-cat">-</div>
+                <h2 id="modalTitle" class="modal-title">-</h2>
+                <div id="modalPrice" class="modal-price">-</div>
                 
                 <div class="modal-meta">
-                    <div class="meta-item"><span data-t="modal_sku">SKU</span> <b id="modalSKU">-</b></div>
-                    <div class="meta-item"><span data-t="modal_color">Color</span> <b id="modalColor">-</b></div>
+                    <div class="meta-item"><span>SKU</span> <b id="modalSKU">-</b></div>
+                    <div class="meta-item"><span>STOCK</span> <b id="modalPieces">-</b></div>
                 </div>
 
-                <div class="production-details" style="margin-top:0;">
-                    <h4 data-t="modal_production">Production Details</h4>
-                    <p id="modalProd">-</p>
+                <div class="production-details">
+                    <h4 data-t="modal_production">Manufacturing History</h4>
+                    <p id="modalHistory" style="font-size: 0.8rem; color: var(--text-dim);">-</p>
                 </div>
 
-                <div class="modal-actions" style="margin-top:2rem;">
-                    <button class="btn-primary" onclick="simulateWorkflow('workflow')">Lancer Workflow Commande</button>
+                <div class="modal-actions">
+                    <button class="btn-primary" onclick="simulateWorkflow('n8n')">Trigger n8n Orchestration</button>
+                    <button class="btn-primary" style="background:#222; margin-top: 1rem;" onclick="simulateWorkflow('api')">Sync MPC API</button>
                 </div>
             </div>
         </div>
@@ -144,75 +172,38 @@
 
     <script>
         const translations = {
-            en: {
-                nav_collection: "Collection", nav_heritage: "Heritage",
-                hero_title: "1CL ECOSYSTEM", hero_subtitle: "Integrated Fashion Hub (EMS@Path)",
-                filter_all: "All", modal_sku: "SKU", modal_color: "Color", modal_production: "Production",
-                type_PUL: "Pull / Sweat", type_TSH: "T-Shirt", type_JOG: "Jogging", type_VST: "Veste"
-            },
-            fr: {
-                nav_collection: "Collection", nav_heritage: "Héritage",
-                hero_title: "ECOSYSTÈME 1CL", hero_subtitle: "Hub Fashion Intégré (EMS@Path)",
-                filter_all: "Tous", modal_sku: "SKU", modal_color: "Couleur", modal_production: "Production",
-                type_PUL: "Pull / Sweat", type_TSH: "T-Shirt", type_JOG: "Jogging", type_VST: "Veste"
-            }
+            en: { filter_all: "All", modal_production: "Production", contact_title: "Contact Hub", nav_collection: "Collection", nav_contact: "Contact" },
+            fr: { filter_all: "Tous", modal_production: "Production", contact_title: "Hub Contact", nav_collection: "Collection", nav_contact: "Contact" }
         };
 
+        let currentLang = 'en';
+        let isAdmin = false;
+        let currentProduct = null;
+        let playlist = [
+            { title: "C'est mon choix", artist: "Liklyps feat chawblick", file: "mp3/C'est mon choix_Liklyps feat chawblick.mp3" },
+            { title: "Vital Energy", artist: "Chawblick", file: "mp3/Vital energy_instru.mp3" },
+            { title: "Simple Thing", artist: "Chawblick", file: "mp3/There Is Just a Simple Thing.mp3" }
+        ];
+        let audio = new Audio();
+        let trackIdx = -1;
+
         const products = [
-            { 
-                id: 1, type: "PUL", name: "Pull Premium Black", color: {en: "Black", fr: "Noir"}, price: 120, img: "1CL-PUL-BLK1.jpg.png", sku: "1CL-PUL-BLK-01",
-                audioPlaylist: Array(10).fill({title: "Track - 1CL Black Soul", artist: "Chawblick Artist"}),
-                catalogueFabrication: { fournisseur: "Luxury Weave Co", textile: "Giza Cotton 400gsm", distributeur: "Oneshoplink", marketplace: "Global Fashion Hub", prixFabrication: 35, prixRevient: 45, prixVente: 120, marge: 75, benefice: 62.5 },
-                rentabilite: { breakEven: 150, objectifMensuel: 5000 },
-                workflowFournisseur: { commandeAuto: true, alertStock: 10 },
-                promotion: { facebook: true, instagram: true, tiktok: true, chawblickMusic: true }
-            },
-            { 
-               id: 2, type: "JOG", name: "Jogging Heritage Gold", color: {en: "Gold", fr: "Or"}, price: 110, img: "1CL-JOG-GLD.jpg.png", sku: "1CL-JOG-GLD-01",
-               audioPlaylist: Array(10).fill({title: "Track - Golden Path", artist: "Chawblick Artist"}),
-               catalogueFabrication: { fournisseur: "Chrome Textiles", textile: "HeavyTech Fleece", distributeur: "Oneshoplink", marketplace: "Luxe Marketplace", prixFabrication: 28, prixRevient: 38, prixVente: 110, marge: 72, benefice: 58 },
-               rentabilite: { breakEven: 120, objectifMensuel: 4500 },
-               workflowFournisseur: { commandeAuto: true, alertStock: 5 },
-               promotion: { facebook: true, instagram: true, tiktok: true, chawblickMusic: true }
-            }
-            // ... (I will populate more items using the logic, but starting with these 2 for the core structure demonstration)
+            { id: 1, type: "PUL", name: "Pull Premium Black", price: 120, img: "1CL-PUL-BLK1.jpg.png", sku: "1CL-PUL-BLK-01", pieces: 250, history: "Launched Q1 2026. High retention rate. Silk-screen printing.", nextRelease: "May 2026", forecast: "High demand expected" },
+            { id: 2, type: "JOG", name: "Jogging Heritage Gold", price: 110, img: "1CL-JOG-GLD.jpg.png", sku: "1CL-JOG-GLD-01", pieces: 150, history: "Special edition chrome textiles. Hand-finished.", nextRelease: "June 2026", forecast: "Collectors favorite" },
+            { id: 3, type: "TSH", name: "T-Shirt Noble White", price: 65, img: "1CL-TSH-WHI.jpg.png", sku: "1CL-TSH-WHI-01", pieces: 500, history: "Essential line. Bio-cotton blend.", nextRelease: "Available", forecast: "Steady supply" }
         ];
 
-        // Populate more products to ensure we reach 28
-        const types = ["PUL", "JOG", "TSH", "VST"];
-        for(let i=3; i<=28; i++) {
-            const type = types[i % 4];
-            products.push({
-                id: i, type: type, name: `${type} Heritage ${i}`, color: {en: "Accent", fr: "Accent"}, price: 90 + (i*2), img: `1CL-${type}-BLK.jpg.png`, sku: `1CL-${type}-${i}-01`,
-                audioPlaylist: Array(10).fill({title: `Track ${i} - Vibes`, artist: "Chawblick"}),
-                catalogueFabrication: { fournisseur: "Standard Wear", textile: "Premium Cotton", distributeur: "Oneshoplink", marketplace: "Standard Hub", prixFabrication: 20, prixRevient: 30, prixVente: 90 + (i*2), marge: 60, benefice: 50 },
-                rentabilite: { breakEven: 100, objectifMensuel: 3000 },
-                workflowFournisseur: { commandeAuto: false, alertStock: 10 },
-                promotion: { facebook: true, instagram: false, tiktok: true, chawblickMusic: true }
-            });
+        // Hydrate rest of 28 items
+        for(let i=4; i<=28; i++) {
+            products.push({ id: i, type: "VST", name: `Item Heritage ${i}`, price: 150, img: "1CL-VST-BLK.jpg.png", sku: `1CL-VST-${i}`, pieces: 100, history: "Standard business asset.", nextRelease: "July 2026", forecast: "Low risk" });
         }
 
-        let currentLang = 'en';
-        let currentProduct = null;
-        let isPlaying = false;
-        let currentTrackIdx = 0;
-
-        function toggleEMS() { document.getElementById('emsSidebar').classList.toggle('active'); }
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.querySelectorAll('[data-t]').forEach(el => {
-                const key = el.getAttribute('data-t');
-                el.innerText = translations[lang][key] || el.innerText;
-            });
-            
-            // Switch active buttons
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.innerText.toLowerCase() === lang);
-            });
-
-            renderProducts();
-            log(`Language switched to: ${lang.toUpperCase()}`);
+        function toggleAdmin() {
+            isAdmin = !isAdmin;
+            document.getElementById('heritageSection').style.display = isAdmin ? 'block' : 'none';
+            document.getElementById('adminToggle').style.background = isAdmin ? '#fff' : 'var(--primary)';
+            log(isAdmin ? "Admin mode activated. Supplier Portal unlocked." : "Admin mode deactivated.");
+            renderSupplierStats();
         }
 
         function renderProducts() {
@@ -221,14 +212,8 @@
             products.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
-                card.innerHTML = `
-                    <div class="product-image"><img src="${p.img}" alt="${p.name}"></div>
-                    <div class="product-info">
-                        <div class="product-cat">${translations[currentLang]['type_' + p.type]}</div>
-                        <h3 class="product-name">${p.name}</h3>
-                        <div class="product-price">${p.price}.00 €</div>
-                    </div>
-                `;
+                card.innerHTML = `<div class="product-image"><img src="${p.img}" onerror="this.src='https://placehold.co/800x800/222/var(--primary)?text=1CL'"></div>
+                                 <div class="product-info"><h3 class="product-name">${p.name}</h3><div class="product-price">${p.price}.00 €</div></div>`;
                 card.onclick = () => openModal(p);
                 grid.appendChild(card);
             });
@@ -240,85 +225,125 @@
             document.getElementById('modalTitle').innerText = p.name;
             document.getElementById('modalPrice').innerText = `${p.price}.00 €`;
             document.getElementById('modalSKU').innerText = p.sku;
-            document.getElementById('modalColor').innerText = p.color[currentLang];
-            document.getElementById('modalProd').innerText = p.catalogueFabrication.textile;
+            document.getElementById('modalPieces').innerText = p.pieces;
+            document.getElementById('modalHistory').innerText = p.history;
             document.getElementById('productModal').classList.add('active');
-            
-            // Sync Dashboard
-            updateDashboard(p);
-            
-            // Sync Audio Player (Assignment)
-            currentTrackIdx = 0;
-            updateAudioPlayer();
-            
-            log(`Product ${p.sku} opened. Audio Engine synced.`);
         }
 
         function closeModal() { document.getElementById('productModal').classList.remove('active'); }
 
-        function updateDashboard(p) {
-            document.getElementById('emsBreakEven').innerText = `${p.rentabilite.breakEven} Units`;
-            document.getElementById('emsGoal').innerText = `${p.rentabilite.objectifMensuel} €`;
-            const marginPerc = ((p.catalogueFabrication.marge / p.catalogueFabrication.prixVente) * 100).toFixed(1);
-            document.getElementById('emsMargin').innerText = `${marginPerc}%`;
-            document.getElementById('emsSupplier').innerText = p.catalogueFabrication.fournisseur;
-            document.getElementById('emsTextile').innerText = p.catalogueFabrication.textile;
-            document.getElementById('emsDist').innerText = p.catalogueFabrication.distributeur;
+        function renderSupplierStats() {
+            const grid = document.getElementById('supplierGrid');
+            grid.innerHTML = `
+                <div class="supplier-card"><span class="card-label">Pièces Totales</span><div class="card-value">12,450</div></div>
+                <div class="supplier-card"><span class="card-label">Sorties Prévues</span><div class="card-value">14 Samples</div></div>
+                <div class="supplier-card"><span class="card-label">Prévisions Q2</span><div class="card-value">+24% Revenue</div></div>
+            `;
         }
 
-        function log(msg, isAlert = false) {
+        // Draggable Audio Engine
+        let isDragging = false, offsetX, offsetY;
+        function dragStart(e) {
+            if(e.target.closest('.playback-controls') || e.target.closest('input')) return;
+            isDragging = true;
+            offsetX = e.clientX - elitePlayer.offsetLeft;
+            offsetY = e.clientY - elitePlayer.offsetTop;
+            document.onmousemove = dragMove;
+            document.onmouseup = dragEnd;
+        }
+        function dragMove(e) {
+            if(!isDragging) return;
+            elitePlayer.style.left = (e.clientX - offsetX) + 'px';
+            elitePlayer.style.top = (e.clientY - offsetY) + 'px';
+            localStorage.setItem('playerPos', JSON.stringify({left: elitePlayer.style.left, top: elitePlayer.style.top}));
+        }
+        function dragEnd() { isDragging = false; }
+
+        function togglePlayer() { document.getElementById('elitePlayer').classList.toggle('active'); }
+        function closePlayer() { document.getElementById('elitePlayer').classList.remove('active'); }
+
+        function updatePlaylistUI() {
+            const list = document.getElementById('elitePlaylist');
+            list.innerHTML = '';
+            playlist.forEach((t, i) => {
+                const item = document.createElement('div');
+                item.className = i === trackIdx ? 'playlist-item active' : 'playlist-item';
+                item.innerHTML = `<span>${t.title}</span><i class="fa-solid fa-trash" onclick="deleteTrack(${i})"></i>`;
+                item.onclick = (e) => { if(e.target.tagName !== 'I') loadTrack(i); };
+                list.appendChild(item);
+            });
+        }
+
+        function loadTrack(idx) {
+            trackIdx = idx;
+            const t = playlist[idx];
+            audio.src = t.file;
+            document.getElementById('eliteTrackName').innerText = t.title;
+            updatePlaylistUI();
+            audio.play();
+            document.getElementById('elitePlayIcon').className = 'fa-solid fa-circle-pause';
+        }
+
+        function audioAction(type) {
+            if(type === 'play') {
+                if(audio.paused) { 
+                    if(trackIdx === -1) loadTrack(0); else audio.play();
+                    document.getElementById('elitePlayIcon').className = 'fa-solid fa-circle-pause';
+                } else { 
+                    audio.pause();
+                    document.getElementById('elitePlayIcon').className = 'fa-solid fa-circle-play';
+                }
+            } else if(type === 'next') {
+                loadTrack((trackIdx + 1) % playlist.length);
+            } else if(type === 'prev') {
+                loadTrack((trackIdx - 1 + playlist.length) % playlist.length);
+            }
+        }
+
+        function setVolume(v) { audio.volume = v; }
+
+        function deleteTrack(idx) {
+            playlist.splice(idx, 1);
+            if(trackIdx === idx) { audio.pause(); trackIdx = -1; document.getElementById('eliteTrackName').innerText = 'No Track Loaded'; }
+            updatePlaylistUI();
+        }
+
+        function clearPlaylist() { playlist = []; updatePlaylistUI(); audio.pause(); document.getElementById('eliteTrackName').innerText = 'Empty Playlist'; }
+
+        function addTrackPrompt() {
+            const title = prompt("Track Title:");
+            if(title) {
+                playlist.push({ title: title, artist: "Manual Add", file: "" });
+                updatePlaylistUI();
+            }
+        }
+
+        function toggleSearch() { document.getElementById('searchOverlay').style.display = document.getElementById('searchOverlay').style.display === 'flex' ? 'none' : 'flex'; }
+        
+        function externalSearch(svc) {
+            const q = document.getElementById('searchInput').value || "1CL Collection";
+            log(`Searching ${svc.toUpperCase()} for "${q}"... Overlay Link Generated.`);
+            window.open(`https://www.youtube.com/results?search_query=${q}`, '_blank');
+        }
+
+        function log(msg) {
             const logDiv = document.getElementById('workflowLog');
             const entry = document.createElement('div');
-            entry.className = isAlert ? 'log-entry alert' : 'log-entry';
-            const time = new Date().toLocaleTimeString();
-            entry.innerHTML = `<span>[${time}]</span> ${msg}`;
+            entry.className = 'log-entry';
+            entry.innerHTML = `<span>[${new Date().toLocaleTimeString()}]</span> ${msg}`;
             logDiv.prepend(entry);
         }
 
         function simulateWorkflow(type) {
-            if(!currentProduct) { log("Selectionnez un produit d'abord", true); return; }
-            if(type === 'promote') {
-                log(`Promotion lancée : ${currentProduct.sku} -> FB, IG, TikTok.`);
-                log(`Sync Chawblick Music : Playlist assigned.`);
-            } else if(type === 'workflow') {
-                log(`Workflow Commande Fournisseur : ${currentProduct.catalogueFabrication.fournisseur} notifié.`);
-                log(`Alerte Stock : Niv. ${currentProduct.workflowFournisseur.alertStock} unités.`);
-            } else if(type === 'share') {
-                log(`Partage liens sociaux généré pour ${currentProduct.nom}.`);
-            }
+            log(`Triggering ${type.toUpperCase()} Orchestration... Webhook sent to MPC Server.`);
         }
 
-        // Audio Player Logic
-        function updateAudioPlayer() {
-            if(!currentProduct) return;
-            const track = currentProduct.audioPlaylist[currentTrackIdx];
-            document.getElementById('trackTitle').innerText = track.title;
-        }
-
-        function togglePlay() {
-            if(!currentProduct) return;
-            isPlaying = !isPlaying;
-            document.getElementById('playIcon').className = isPlaying ? 'fa-solid fa-pause' : 'fa-solid fa-play';
-            log(isPlaying ? "Audio Playback started." : "Audio Playback paused.");
-        }
-
-        function nextTrack() {
-            if(!currentProduct) return;
-            currentTrackIdx = (currentTrackIdx + 1) % 10;
-            updateAudioPlayer();
-            log(`Next Track: ${currentTrackIdx + 1}/10`);
-        }
-
-        function prevTrack() {
-            if(!currentProduct) return;
-            currentTrackIdx = (currentTrackIdx - 1 + 10) % 10;
-            updateAudioPlayer();
-            log(`Prev Track: ${currentTrackIdx + 1}/10`);
-        }
-
-        // Initialize
+        // Init
+        const pos = JSON.parse(localStorage.getItem('playerPos'));
+        if(pos) { elitePlayer.style.left = pos.left; elitePlayer.style.top = pos.top; }
         renderProducts();
-        log("Ecosystème 1CL - Modules EMS@Path chargés.");
+        updatePlaylistUI();
+        log("Ecosystème 1CL Master Refresh - Prêt.");
     </script>
 </body>
 </html>
