@@ -473,103 +473,152 @@ nav a:hover { color: var(--primary); }
     text-transform: uppercase;
 }
 
-/* Video Campaign Section */
-.campaign-video {
-    width: 100%;
-    height: 60vh;
-    background: #000;
-    margin-bottom: 4rem;
-    position: relative;
-    overflow: hidden;
-    border-radius: 20px;
-    border: 1px solid var(--glass-border);
-}
-
-.video-player {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.6;
-}
-
-.video-overlay {
-    position: absolute;
+/* EMS@Path Side Dashboard */
+.ems-sidebar {
+    position: fixed;
+    right: -450px;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to top, rgba(10,10,10,1), transparent);
-}
-
-.video-title {
-    font-size: 1.5rem;
-    color: var(--primary);
-    margin-bottom: 1rem;
-    letter-spacing: 0.5rem;
-}
-
-/* Cart Badge */
-.cart-wrap {
-    position: relative;
-    margin-left: 2rem;
-}
-
-.cart-icon {
-    font-size: 1.2rem;
+    width: 450px;
+    height: 100vh;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(30px);
+    border-left: 1px solid var(--glass-border);
+    z-index: 1500;
+    transition: var(--transition);
+    padding: 2rem;
+    overflow-y: auto;
     color: var(--text-light);
+}
+
+.ems-sidebar.active {
+    right: 0;
+}
+
+.admin-btn {
+    background: var(--primary);
+    color: var(--bg-dark);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
     cursor: pointer;
+    margin-right: 1.5rem;
     transition: var(--transition);
 }
 
-.cart-count {
-    position: absolute;
-    top: -5px;
-    right: -10px;
-    background: var(--primary);
-    color: var(--bg-dark);
-    font-size: 0.6rem;
-    font-weight: 700;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
+.admin-btn:hover {
+    background: var(--text-light);
+}
+
+/* Audio Engine */
+.audio-player-floating {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    background: rgba(20, 20, 20, 0.9);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: 60px;
+    padding: 1rem 2rem;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 1.5rem;
+    z-index: 1200;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 
-/* Size Selection */
-.size-btn.active {
-    background: var(--primary);
-    color: var(--bg-dark);
-    border-color: var(--primary);
-    transform: scale(1.1);
+.audio-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 
-/* Toast Notification */
-#toast {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: var(--primary);
-    color: var(--bg-dark);
-    padding: 1rem 2rem;
-    border-radius: 50px;
+.audio-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.audio-btn:hover {
+    color: var(--primary);
+}
+
+.audio-info {
+    flex-grow: 1;
+}
+
+.audio-title {
     font-weight: 700;
     font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1rem;
-    transform: translateY(100px);
-    opacity: 0;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 2000;
-    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+    color: var(--text-light);
+    margin-bottom: 0.2rem;
 }
 
-#toast.show {
-    transform: translateY(0);
-    opacity: 1;
+.audio-artist {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+}
+
+/* Dashboard Modules */
+.ems-module {
+    margin-bottom: 2.5rem;
+    background: var(--glass);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+}
+
+.module-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 0.5rem;
+}
+
+.module-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+
+/* Journal de Bord */
+.workflow-log {
+    background: #000;
+    padding: 1rem;
+    border-radius: 6px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.75rem;
+    height: 150px;
+    overflow-y: auto;
+    border: 1px solid var(--glass-border);
+}
+
+.log-entry { margin-bottom: 0.4rem; color: #88ff88; }
+.log-entry.alert { color: #ff8888; }
+.log-entry span { color: var(--text-dim); }
+
+/* Table Rentabilité */
+.data-table {
+    width: 100%;
+    font-size: 0.8rem;
+    border-collapse: collapse;
+}
+
+.data-table th { text-align: left; color: var(--text-dim); padding: 0.5rem 0; font-weight: 400; }
+.data-table td { padding: 0.5rem 0; font-weight: 700; }
+
+@media (max-width: 768px) {
+    .audio-player-floating { width: 90%; }
+    .ems-sidebar { width: 100%; right: -100%; }
 }
