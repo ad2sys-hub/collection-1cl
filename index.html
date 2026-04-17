@@ -32,54 +32,96 @@
         </div>
     </header>
 
-    <!-- Draggable Elite Audio Player -->
-    <div class="audio-player-elite" id="elitePlayer" onmousedown="dragStart(event, 'elitePlayer')">
-        <div class="player-header">
-            <span>ELITE AUDIO ENGINE</span>
-            <div style="display:flex; gap: 10px;">
-                <i class="fa-solid fa-minus" title="Hide" style="cursor:pointer;" onclick="togglePlayer()"></i>
-                <i class="fa-solid fa-xmark" title="Close" style="cursor:pointer;" onclick="closePlayer()"></i>
+    <!-- Unified Media Control Center -->
+    <div class="media-center-hub" id="mediaHub" onmousedown="dragStart(event, 'mediaHub')">
+        <div class="hub-tabs">
+            <button class="tab-btn" id="tabMp3" onclick="switchMediaTab('mp3')">Elite MP3</button>
+            <button class="tab-btn active" id="tabSpotify" onclick="switchMediaTab('spotify')">Spotify Station</button>
+            <div style="margin-left:auto; display:flex; align-items:center; padding-right:1rem; gap:10px;">
+                <i class="fa-solid fa-minus" title="Hide" style="cursor:pointer;" onclick="toggleHub()"></i>
+                <i class="fa-solid fa-xmark" title="Close" style="cursor:pointer;" onclick="closeHub()"></i>
             </div>
         </div>
         
-        <div class="audio-controls-elite">
-            <div class="track-info-elite">
-                <span class="track-name" id="eliteTrackName">No Track Loaded</span>
-                <span class="track-artist">1CL x Chawblick</span>
+        <div class="hub-content">
+            <!-- MP3 View -->
+            <div id="viewMp3" class="media-view">
+                <div class="track-info-elite">
+                    <span class="track-name" id="eliteTrackName">No Track Loaded</span>
+                    <span class="track-artist">1CL x Chawblick</span>
+                </div>
+                <div class="playback-controls">
+                    <button class="btn-icon" onclick="audioAction('prev')"><i class="fa-solid fa-backward-step"></i></button>
+                    <button class="btn-icon btn-play-large" onclick="audioAction('play')"><i class="fa-solid fa-circle-play" id="elitePlayIcon"></i></button>
+                    <button class="btn-icon" onclick="audioAction('next')"><i class="fa-solid fa-forward-step"></i></button>
+                </div>
+                <div class="volume-container">
+                    <i class="fa-solid fa-volume-low" style="font-size:0.7rem;"></i>
+                    <input type="range" class="vol-slider" min="0" max="1" step="0.1" value="0.8" oninput="setVolume(this.value)">
+                    <i class="fa-solid fa-volume-high" style="font-size:0.7rem;"></i>
+                </div>
+                <div style="display:flex; justify-content: space-around; margin-top: 1rem; border-top: 1px solid var(--glass-border); padding-top: 1rem;">
+                    <i class="fa-solid fa-magnifying-glass" style="cursor:pointer;" onclick="toggleSearch()"></i>
+                    <i class="fa-solid fa-plus-circle" style="cursor:pointer;" onclick="addTrackPrompt()"></i>
+                    <i class="fa-solid fa-trash-can" style="cursor:pointer;" onclick="clearPlaylist()"></i>
+                </div>
+                <div class="playlist-manager" id="elitePlaylist" style="max-height:100px; overflow-y:auto; margin-top:10px;"></div>
+            </div>
+
+            <!-- Spotify View -->
+            <div id="viewSpotify" class="media-view active">
+                <iframe style="border-radius:12px;" src="https://open.spotify.com/embed/album/10lhlXRUFrbC09tuhuxjy6?utm_source=generator" width="100%" height="320" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- EMS Administrative Sidebar HUD -->
+    <aside class="ems-sidebar" id="emsSidebar">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+            <h3 style="color:var(--primary); margin:0;">EMS@PATH DASHBOARD</h3>
+            <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:1.5rem;" onclick="toggleAdmin()"></i>
+        </div>
+
+        <!-- Flash KPI Flash Summary -->
+        <div class="kpi-grid-mini">
+            <div class="kpi-card-mini"><span>Global Stock</span><b>12,450 pcs</b></div>
+            <div class="kpi-card-mini"><span>Forecast Q2</span><b>+28% ROI</b></div>
+            <div class="kpi-card-mini"><span>Active Flows</span><b>14 Synced</b></div>
+            <div class="kpi-card-mini"><span>Lead Time</span><b>22 Days</b></div>
+        </div>
+
+        <!-- Agent IA Administratif -->
+        <div class="ems-module">
+            <div class="module-header"><span class="module-title">Agent IA Administratif</span></div>
+            <div class="admin-form">
+                <input type="text" id="contractParty" class="admin-input" placeholder="Partie B (Client/Fournisseur)">
+                <select id="contractType" class="admin-input">
+                    <option value="client">Contrat Client Final</option>
+                    <option value="supplier">Contrat Fournisseur</option>
+                    <option value="transporter">Contrat Transporteur</option>
+                </select>
+                <button class="btn-primary" onclick="fabricateContract()">Fabriquer Contrat</button>
             </div>
             
-            <div class="playback-controls">
-                <button class="btn-icon" onclick="audioAction('prev')"><i class="fa-solid fa-backward-step"></i></button>
-                <button class="btn-icon btn-play-large" onclick="audioAction('play')"><i class="fa-solid fa-circle-play" id="elitePlayIcon"></i></button>
-                <button class="btn-icon" onclick="audioAction('next')"><i class="fa-solid fa-forward-step"></i></button>
-            </div>
-
-            <div class="volume-container">
-                <i class="fa-solid fa-volume-low" style="font-size:0.7rem;"></i>
-                <input type="range" class="vol-slider" min="0" max="1" step="0.1" value="0.8" oninput="setVolume(this.value)">
-                <i class="fa-solid fa-volume-high" style="font-size:0.7rem;"></i>
-            </div>
-
-            <div style="display:flex; justify-content: space-around; margin-top: 1rem; border-top: 1px solid var(--glass-border); padding-top: 1rem;">
-                <i class="fa-solid fa-magnifying-glass" title="Search External" style="cursor:pointer;" onclick="toggleSearch()"></i>
-                <i class="fa-solid fa-plus-circle" title="Add Track" style="cursor:pointer;" onclick="addTrackPrompt()"></i>
-                <i class="fa-solid fa-trash-can" title="Clear Playlist" style="cursor:pointer;" onclick="clearPlaylist()"></i>
-            </div>
-
-            <div class="playlist-manager" id="elitePlaylist">
-                <!-- Tracks -->
+            <div class="collapsible-module">
+                <div class="collapsible-header" onclick="toggleCollapsible()">
+                    <span>Historique Session</span>
+                    <i class="fa-solid fa-chevron-down" id="collapsibleIcon"></i>
+                </div>
+                <div class="collapsible-content" id="contractHistory">
+                    <div style="color:var(--text-dim); font-size: 0.7rem;">Aucun contrat.</div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Draggable Spotify Player -->
-    <div class="audio-player-elite" id="spotifyPlayer" onmousedown="dragStart(event, 'spotifyPlayer')" style="bottom: auto; top: 100px; right: 30px; width: 352px; padding: 0; background: none; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-        <div class="player-header" style="background: rgba(10,10,10,0.9); padding: 0.8rem; border-radius: 12px 12px 0 0; margin: 0; border: 1px solid var(--glass-border);">
-            <span>SPOTIFY STATION</span>
-            <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="document.getElementById('spotifyPlayer').style.display='none'"></i>
+        <!-- Journal de Bord High-Fidelity -->
+        <div class="ems-module" style="margin-top:2rem;">
+            <div class="module-header"><span class="module-title">Journal MPC Server Sync</span></div>
+            <div class="workflow-log" id="workflowLog" style="height:250px;"></div>
         </div>
-        <iframe data-testid="embed-iframe" style="border-radius:0 0 12px 12px; border: 1px solid var(--glass-border); border-top: none;" src="https://open.spotify.com/embed/album/10lhlXRUFrbC09tuhuxjy6?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
+        
+        <button class="btn-primary" style="width:100%; margin-top:2rem; background:rgba(255,255,255,0.05); color:#fff; border:1px solid var(--glass-border);" onclick="simulateWorkflow('sync')">Force Global Sync</button>
+    </aside>
 
     <!-- Search Overlay -->
     <div class="search-overlay" id="searchOverlay">
@@ -121,45 +163,10 @@
 
     <!-- Supplier Intelligence Portal (Restricted) -->
     <section class="container" id="heritageSection" style="display:none;">
-        <div class="supplier-portal">
+        <div class="supplier-portal" style="margin-top:2rem;">
             <h2 style="color:var(--primary); text-transform:uppercase; letter-spacing:5px;">Catalogue Fournisseur Intelligent</h2>
             <p style="color:var(--text-dim); margin-bottom: 2rem;">Workflows EMS@Path : Prévisions de stock et sorties prévues.</p>
-            
-            <div class="supplier-grid" id="supplierGrid">
-                <!-- Dynamic Stats -->
-            </div>
-
-            <!-- Agent IA Administratif Module -->
-            <div class="ems-module" style="margin-top:4rem;">
-                <div class="module-header"><span class="module-title">Agent IA Administratif - Fabrication de Contrats</span></div>
-                <div class="admin-form">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <input type="text" id="contractParty" class="admin-input" placeholder="Nom de la Partie B (Client/Fournisseur)">
-                        <select id="contractType" class="admin-input">
-                            <option value="client">Modèle Contrat Client Final</option>
-                            <option value="supplier">Modèle Contrat Fournisseur</option>
-                            <option value="transporter">Modèle Contrat Transporteur</option>
-                        </select>
-                    </div>
-                    <button class="btn-primary" onclick="fabricateContract()">Lancer la Fabrication IA</button>
-                </div>
-
-                <!-- Collapsible History Menu -->
-                <div class="collapsible-module">
-                    <div class="collapsible-header" onclick="toggleCollapsible()">
-                        <span>Journal des Contrats Générés</span>
-                        <i class="fa-solid fa-chevron-down" id="collapsibleIcon"></i>
-                    </div>
-                    <div class="collapsible-content" id="contractHistory">
-                        <div style="color:var(--text-dim); font-size: 0.7rem;">Aucun contrat généré dans cette session.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ems-module" style="margin-top:2rem;">
-                <div class="module-header"><span class="module-title">Journal de Bord (MPC Server Sync)</span></div>
-                <div class="workflow-log" id="workflowLog"></div>
-            </div>
+            <div class="supplier-grid" id="supplierGrid"></div>
         </div>
     </section>
 
@@ -241,39 +248,48 @@
     </div>
 
     <script>
+        const products = [
+            { id: 1, name: "Premium Gold Fleece", price: 180, cat: "PUL", img: "Jogging 1 CL gold black v.1.png", sku: "1CL-PUL-01", pieces: 250, history: "Launched Q1 2026. Silk-screen printing." },
+            { id: 2, name: "Onyx Street Veste", price: 250, cat: "VST", img: "Jogging 1CL gold black v.2.png", sku: "1CL-VST-01", pieces: 150, history: "Industrial-grade tech veste." },
+            { id: 3, name: "Heritage Tee Gold", price: 85, cat: "TSH", img: "T-shirt collection 1CL.gold.black.png", sku: "1CL-TSH-01", pieces: 500, history: "100% Giza cotton." },
+            { id: 4, name: "Classic 1CL Joggers", price: 140, cat: "JOG", img: "Jogging 1CL.gold.black.png", sku: "1CL-JOG-01", pieces: 300, history: "Engineered fit joggers." }
+        ];
+
+        for(let i=5; i<=28; i++) {
+            products.push({ id: i, name: `Heritage Piece #${100+i}`, price: 125, cat: ["PUL", "TSH", "JOG", "VST"][i % 4], img: products[i % 4].img, sku: `1CL-HER-${i}`, pieces: 100, history: "Standard asset." });
+        }
+
+        const playlist = [
+            { title: "Heritage Gold", artist: "1CL x Chawblick", file: "mp3/track1.mp3" },
+            { title: "Onyx Flow", artist: "Oneshoplink Beats", file: "mp3/track2.mp3" },
+            { title: "C'est mon choix", artist: "Liklyps feat chawblick", file: "mp3/C'est mon choix_Liklyps feat chawblick.mp3" },
+            { title: "Vital Energy", artist: "Chawblick", file: "mp3/Vital energy_instru.mp3" }
+        ];
+
         const translations = {
             en: { filter_all: "All", modal_production: "Production", contact_title: "Contact Hub", nav_collection: "Collection", nav_contact: "Contact" },
             fr: { filter_all: "Tous", modal_production: "Production", contact_title: "Hub Contact", nav_collection: "Collection", nav_contact: "Contact" }
         };
 
         let currentLang = 'en';
-        let isAdmin = false;
-        let currentProduct = null;
-        let playlist = [
-            { title: "C'est mon choix", artist: "Liklyps feat chawblick", file: "mp3/C'est mon choix_Liklyps feat chawblick.mp3" },
-            { title: "Vital Energy", artist: "Chawblick", file: "mp3/Vital energy_instru.mp3" },
-            { title: "Simple Thing", artist: "Chawblick", file: "mp3/There Is Just a Simple Thing.mp3" }
-        ];
         let audio = new Audio();
         let trackIdx = -1;
 
-        const products = [
-            { id: 1, type: "PUL", name: "Pull Premium Black", price: 120, img: "1CL-PUL-BLK1.jpg.png", sku: "1CL-PUL-BLK-01", pieces: 250, history: "Launched Q1 2026. High retention rate. Silk-screen printing.", nextRelease: "May 2026", forecast: "High demand expected" },
-            { id: 2, type: "JOG", name: "Jogging Heritage Gold", price: 110, img: "1CL-JOG-GLD.jpg.png", sku: "1CL-JOG-GLD-01", pieces: 150, history: "Special edition chrome textiles. Hand-finished.", nextRelease: "June 2026", forecast: "Collectors favorite" },
-            { id: 3, type: "TSH", name: "T-Shirt Noble White", price: 65, img: "1CL-TSH-WHI.jpg.png", sku: "1CL-TSH-WHI-01", pieces: 500, history: "Essential line. Bio-cotton blend.", nextRelease: "Available", forecast: "Steady supply" }
-        ];
-
-        // Hydrate rest of 28 items
-        for(let i=4; i<=28; i++) {
-            products.push({ id: i, type: "VST", name: `Item Heritage ${i}`, price: 150, img: "1CL-VST-BLK.jpg.png", sku: `1CL-VST-${i}`, pieces: 100, history: "Standard business asset.", nextRelease: "July 2026", forecast: "Low risk" });
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                if(translations[lang][key]) el.innerText = translations[lang][key];
+            });
+            log(`Language switched to ${lang.toUpperCase()}`);
         }
 
         function toggleAdmin() {
-            isAdmin = !isAdmin;
-            document.getElementById('heritageSection').style.display = isAdmin ? 'block' : 'none';
-            document.getElementById('adminToggle').style.background = isAdmin ? '#fff' : 'var(--primary)';
-            log(isAdmin ? "Admin mode activated. Supplier Portal unlocked." : "Admin mode deactivated.");
-            renderSupplierStats();
+            const sidebar = document.getElementById('emsSidebar');
+            const heritage = document.getElementById('heritageSection');
+            sidebar.classList.toggle('active');
+            heritage.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+            log(sidebar.classList.contains('active') ? "EMS Dashboard HUD Activated." : "HUD Dashboard Restricted.");
         }
 
         function renderProducts() {
@@ -311,12 +327,25 @@
             `;
         }
 
-        // Draggable Logic for Multiple Players
+        // Unified Media Hub Logic
+        function switchMediaTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.media-view').forEach(v => v.classList.remove('active'));
+            document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+            document.getElementById(`view${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+            log(`Media Hub: Switched to ${tab.toUpperCase()}`);
+        }
+
+        function toggleHub() { document.getElementById('mediaHub').style.display = document.getElementById('mediaHub').style.display === 'none' ? 'block' : 'none'; }
+        function closeHub() { document.getElementById('mediaHub').style.display = 'none'; }
+
         let currentDragEl = null;
         let isDragging = false, offsetX, offsetY;
 
         function dragStart(e, id) {
-            if(e.target.closest('.playback-controls') || e.target.closest('input') || e.target.tagName === 'IFRAME') return;
+            if(e.target.closest('.playback-controls') || e.target.closest('.hub-tabs') || e.target.closest('input') || e.target.tagName === 'IFRAME') {
+                if(!e.target.closest('.hub-tabs')) return;
+            }
             currentDragEl = document.getElementById(id);
             isDragging = true;
             offsetX = e.clientX - currentDragEl.offsetLeft;
@@ -329,18 +358,10 @@
             if(!isDragging || !currentDragEl) return;
             currentDragEl.style.left = (e.clientX - offsetX) + 'px';
             currentDragEl.style.top = (e.clientY - offsetY) + 'px';
-            currentDragEl.style.bottom = 'auto'; // Break fixed bottom if exists
-            
-            // Save individual positions
-            const positions = JSON.parse(localStorage.getItem('hubPositions') || '{}');
-            positions[currentDragEl.id] = { left: currentDragEl.style.left, top: currentDragEl.style.top };
-            localStorage.setItem('hubPositions', JSON.stringify(positions));
+            currentDragEl.style.bottom = 'auto';
+            localStorage.setItem(`${currentDragEl.id}Pos`, JSON.stringify({left: currentDragEl.style.left, top: currentDragEl.style.top}));
         }
-
         function dragEnd() { isDragging = false; currentDragEl = null; }
-
-        function togglePlayer() { document.getElementById('elitePlayer').classList.toggle('active'); }
-        function closePlayer() { document.getElementById('elitePlayer').classList.remove('active'); }
 
         function updatePlaylistUI() {
             const list = document.getElementById('elitePlaylist');
@@ -477,19 +498,15 @@
         }
 
         // Init
-        const hubPos = JSON.parse(localStorage.getItem('hubPositions') || '{}');
-        Object.keys(hubPos).forEach(id => {
-            const el = document.getElementById(id);
-            if(el) {
-                el.style.left = hubPos[id].left;
-                el.style.top = hubPos[id].top;
-                el.style.bottom = 'auto';
-            }
-        });
+        const savedPos = JSON.parse(localStorage.getItem('mediaHubPos'));
+        if(savedPos) {
+            const hub = document.getElementById('mediaHub');
+            hub.style.left = savedPos.left; hub.style.top = savedPos.top; hub.style.bottom = 'auto';
+        }
 
         renderProducts();
         updatePlaylistUI();
-        log("Ecosystème 1CL Master Refresh - Agent IA Administratif & Spotify Prêt.");
+        log("Ecosystème 1CL Master Refresh - Hub Media & Sidebar Unifiés.");
     </script>
 </body>
 </html>
