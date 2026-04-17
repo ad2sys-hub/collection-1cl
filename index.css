@@ -856,6 +856,109 @@ nav a:hover { color: var(--primary); }
     .bio-text { font-size: 1rem; }
 }
 
+/* Global Logistics Map */
+.logistics-widget {
+    margin-top: 2rem;
+    background: rgba(0,0,0,0.4);
+    border-radius: 15px;
+    padding: 1rem;
+    border: 1px solid var(--glass-border);
+}
+
+.map-svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 5px var(--primary));
+}
+
+.map-dot {
+    fill: var(--primary);
+    animation: mapPulse 2s infinite;
+}
+
+@keyframes mapPulse {
+    0% { r: 2; opacity: 1; }
+    100% { r: 6; opacity: 0; }
+}
+
+/* E-Signature Pad */
+.signature-container {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+#signaturePad {
+    background: #fff;
+    border-radius: 10px;
+    cursor: crosshair;
+    width: 100%;
+    height: 120px;
+    border: 2px solid var(--primary);
+}
+
+/* The Vault Section */
+.vault-section {
+    padding: 10rem 0;
+    background: #000;
+    text-align: center;
+    position: relative;
+    display: none; /* Restricted */
+}
+
+.vault-section.active { display: block; }
+
+.vault-lock-ui {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    padding: 3rem;
+    display: inline-block;
+    box-shadow: 0 0 100px rgba(212, 175, 55, 0.2);
+}
+
+/* Voice Command Overlay */
+.voice-console {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 10, 10, 0.9);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    border: 1px solid var(--primary);
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    z-index: 5000;
+}
+
+.voice-status-pulse {
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: voiceActive 1s infinite;
+}
+
+@keyframes voiceActive {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 var(--primary); }
+    100% { transform: scale(1.5); box-shadow: 0 0 0 10px transparent; }
+}
+
+/* Atelier HD Mode */
+.atelier-loupe {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border: 3px solid var(--primary);
+    border-radius: 50%;
+    pointer-events: none;
+    display: none;
+    z-index: 1001;
+    background-repeat: no-repeat;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
 /* Agent IA Administratif & Contrats */
 .admin-form {
     display: flex;
