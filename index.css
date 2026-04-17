@@ -618,6 +618,64 @@ nav a:hover { color: var(--primary); }
     .ems-sidebar { width: 100%; right: -100%; }
     .media-center-hub { width: calc(100% - 40px); bottom: 20px; right: 20px; left: 20px; }
 }
+/* 1CL Cinema Section */
+.cinema-section {
+    padding: 6rem 0;
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+}
+
+.cinema-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 2rem;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+.cinema-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent, var(--primary), transparent);
+    animation: rotate 10s linear infinite;
+    opacity: 0.1;
+    z-index: 0;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.cinema-video {
+    width: 100%;
+    border-radius: 20px;
+    display: block;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.cinema-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.cinema-title h2 {
+    font-size: 2.5rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 10px;
+}
+
 /* Agent IA Administratif & Contrats */
 .admin-form {
     display: flex;

@@ -150,6 +150,22 @@
         </div>
     </div>
 
+    <!-- 1CL Cinema Experience -->
+    <section class="cinema-section">
+        <div class="container">
+            <div class="cinema-title">
+                <h2 data-t="cinema_title">1CL Cinema</h2>
+                <p style="color:var(--text-dim); letter-spacing:3px;">THE CAMPAIGN EXPERIENCE</p>
+            </div>
+            <div class="cinema-container">
+                <video class="cinema-video" controls poster="logo CL v.1.gold.png">
+                    <source src="video/Descriptions_de_vidéos_publicitaires_CL.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </section>
+
     <main class="container" id="catalog">
         <div class="filters" id="filterContainer">
             <button class="filter-btn active" data-filter="all" data-t="filter_all">All</button>
@@ -217,7 +233,8 @@
         </div>
     </section>
 
-    <!-- Modal for details -->
+
+    <!-- Product Grid Section -->
     <div class="modal" id="productModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -291,8 +308,8 @@
         ];
 
         const translations = {
-            en: { filter_all: "All", modal_production: "Production", contact_title: "Contact Hub", nav_collection: "Collection", nav_contact: "Contact" },
-            fr: { filter_all: "Tous", modal_production: "Production", contact_title: "Hub Contact", nav_collection: "Collection", nav_contact: "Contact" }
+            en: { filter_all: "All", modal_production: "Production", contact_title: "Contact Hub", nav_collection: "Collection", nav_contact: "Contact", cinema_title: "1CL Cinema" },
+            fr: { filter_all: "Tous", modal_production: "Production", contact_title: "Hub Contact", nav_collection: "Collection", nav_contact: "Contact", cinema_title: "Cinéma 1CL" }
         };
 
         let currentLang = 'en';
