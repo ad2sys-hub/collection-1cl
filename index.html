@@ -120,8 +120,11 @@
 
     <!-- EMS Administrative Sidebar HUD -->
     <aside class="ems-sidebar" id="emsSidebar">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
-            <h3 style="color:var(--primary); margin:0;">EMS@PATH DASHBOARD</h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <div style="display:flex; flex-direction:column;">
+                <h3 style="color:var(--primary); margin:0; letter-spacing:2px;" data-t="hud_title">EMS DASHBOARD</h3>
+                <span id="hudClock" style="font-size:0.75rem; color:var(--primary); font-family:monospace; margin-top:5px; opacity:0.8;">--:--:--</span>
+            </div>
             <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:1.5rem;" onclick="toggleAdmin()"></i>
         </div>
 
@@ -440,9 +443,13 @@
         categories.forEach(cat => {
             colors.forEach(col => {
                 let filename = `1CL-${cat}-${col}.jpg.png`;
+                // Precise mapping for existing assets on disk
                 if(cat === "PUL" && col === "BLK") filename = "1CL-PUL-BLK1.jpg.png";
                 if(cat === "PUL" && col === "BEL") filename = "1CL-PUL-BEI.jpg.png";
-                if(cat === "JOG" && col === "BEL") filename = "1CL-JOG-BLK.jpg.png";
+                if(cat === "PUL" && col === "GRN") filename = "1CL-PUL-Grn.jpg.png";
+                if(cat === "JOG" && col === "WHI") filename = "CL-JOG-WHI.jpg.png";
+                if(cat === "JOG" && col === "BEL") filename = "1CL-JOG-BLK.jpg.png"; // Fallback for missing beige joggers
+                if(cat === "VST" && col === "GREY") filename = "1CL-VST-WHI.jpg.png"; // Fallback for missing grey veste
 
                 products.push({
                     id: products.length + 1,
@@ -469,8 +476,18 @@
         ];
 
         const translations = {
-            en: { filter_all: "All", modal_production: "Production", contact_title: "Contact Hub", nav_collection: "Collection", nav_contact: "Contact", cinema_title: "1CL Cinema", size_guide: "Size Guide" },
-            fr: { filter_all: "Tous", modal_production: "Production", contact_title: "Hub Contact", nav_collection: "Collection", nav_contact: "Contact", cinema_title: "Cinéma 1CL", size_guide: "Guide des Tailles" }
+            en: { 
+                filter_all: "All", modal_production: "Production", contact_title: "Contact Hub", 
+                nav_collection: "Collection", nav_contact: "Contact", cinema_title: "1CL Cinema", 
+                size_guide: "Size Guide", hud_title: "EMS Dashboard", vault_title: "The Vault",
+                agent_welcome: "Welcome to 1CL. I am **The Curator**. How can I guide you?"
+            },
+            fr: { 
+                filter_all: "Tous", modal_production: "Production", contact_title: "Hub Contact", 
+                nav_collection: "Collection", nav_contact: "Contact", cinema_title: "Cinéma 1CL", 
+                size_guide: "Guide des Tailles", hud_title: "Dashboard EMS", vault_title: "The Vault",
+                agent_welcome: "Bienvenue sur 1CL. Je suis **The Curator**. Comment puis-je vous aider ?"
+            }
         };
 
         let currentLang = 'en';
@@ -525,56 +542,62 @@
         // --- Sovereign Intelligence AI Enginge ---
         const knowledgeBase = {
             "vault": {
-                ans: "Le **Vault** est notre zone sécurisée exclusive. Accès : Entrez `Digital Key` dans le portail sous le Cinéma.",
+                fr: "Le **Vault** est notre zone sécurisée exclusive. Accès : Entrez `Digital Key` dans le portail sous le Cinéma.",
+                en: "The **Vault** is our exclusive secure zone. Access: Enter `Digital Key` in the portal below the Cinema.",
                 action: () => document.getElementById('vaultPortal').scrollIntoView({ behavior: 'smooth' })
             },
             "logistique": {
-                ans: "La **Carte Logistique** montre les flux de stock en temps réel entre Milan et nos Hubs. Visible dans le Dashboard Admin.",
+                fr: "La **Carte Logistique** montre les flux de stock en temps réel entre Milan et nos Hubs. Visible dans le Dashboard Admin.",
+                en: "The **Logistics Map** shows real-time stock flows between Milan and our Hubs. Visible in the Admin Dashboard.",
                 action: () => { toggleAdmin(); document.getElementById('logisticsContent').scrollIntoView({ behavior: 'smooth' }); }
             },
             "contrats": {
-                ans: "La **Forge de Contrats** crée des documents PDF certifiés pour les clients, transporteurs et fournisseurs. Disponible via le menu Admin.",
-                action: () => toggleAdmin()
-            },
-            "signature": {
-                ans: "Le **Sovereign Pad** permet une signature électronique manuscrite de haute fidélité intégrée directement dans nos contrats PDF.",
+                fr: "La **Forge de Contrats** crée des documents PDF certifiés pour les partenaires. Disponible via l'Admin.",
+                en: "The **Contract Forge** creates certified PDF documents for partners. Available via the Admin menu.",
                 action: () => toggleAdmin()
             },
             "atelier": {
-                ans: "Le **Mode Atelier** active une loupe HD pour inspecter le tissage premium (280-350g) de chaque pièce. Disponible dans les détails produit.",
+                fr: "Le **Mode Atelier** active une loupe HD pour inspecter le tissage premium. Disponible dans les détails produit.",
+                en: "The **Atelier Mode** activates an HD loupe to inspect premium weaving. Available in product details.",
                 action: () => { if(currentProduct) openModal(currentProduct); }
-            },
-            "audio": {
-                ans: "Le **Media Hub** synchronise notre playlist exclusive avec votre station Spotify. Égaliseur dynamique activé dès la lecture.",
-                action: () => togglePlayer()
-            },
-            "cinema": {
-                ans: "Le **Cinéma 1CL** diffuse nos campagnes publicitaires officielles en haute résolution.",
-                action: () => document.querySelector('.cinema-section').scrollIntoView({ behavior: 'smooth' })
-            },
-            "taille": {
-                ans: "Le **Guide des Tailles** bilingue est disponible dans chaque fiche produit pour garantir un fit parfait.",
-                action: () => { if(currentProduct) openSizeGuide(); }
-            },
-            "voix": {
-                ans: "La **Console Voice** permet de piloter le site par commandes vocales : 'Open Admin', 'Next Track', 'Vault'.",
-                action: () => document.getElementById('voiceConsole').style.display = 'flex'
             }
         };
 
-        function toggleAgent() { document.getElementById('agentChat').classList.toggle('active'); }
+        function toggleAgent() { 
+            document.getElementById('agentChat').classList.toggle('active'); 
+            if(document.getElementById('agentChat').classList.contains('active')) {
+                const welcome = currentLang === 'fr' ? translations.fr.agent_welcome : translations.en.agent_welcome;
+                document.getElementById('agentChatBody').querySelector('.msg-ai').innerHTML = welcome.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            }
+        }
 
         function askAgent(key) {
             const k = key.toLowerCase();
-            const entry = knowledgeBase[k] || { ans: "Je ne connais pas encore cette fonction. Pouvez-vous préciser ?" };
-            addAgentMsg(entry.ans, 'ai');
-            if(entry.action) entry.action();
+            let entry = knowledgeBase[k];
             
-            // Auto-learning concept
+            if(!entry) {
+                addAgentMsg(currentLang === 'fr' ? "Je ne connais pas encore cette fonction." : "I don't know this function yet.", 'ai');
+                return;
+            }
+
+            const ans = currentLang === 'fr' ? (entry.fr || entry.ans) : (entry.en || entry.ans);
+            addAgentMsg(ans, 'ai');
+            if(entry.action) {
+                entry.action();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
             let memory = JSON.parse(localStorage.getItem('aiMemory') || '{}');
             memory[k] = (memory[k] || 0) + 1;
             localStorage.setItem('aiMemory', JSON.stringify(memory));
         }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('hudClock').innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
         function addAgentMsg(text, type) {
             const body = document.getElementById('agentChatBody');
