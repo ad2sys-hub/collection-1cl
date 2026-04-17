@@ -33,7 +33,7 @@
     </header>
 
     <!-- Draggable Elite Audio Player -->
-    <div class="audio-player-elite" id="elitePlayer" onmousedown="dragStart(event)">
+    <div class="audio-player-elite" id="elitePlayer" onmousedown="dragStart(event, 'elitePlayer')">
         <div class="player-header">
             <span>ELITE AUDIO ENGINE</span>
             <div style="display:flex; gap: 10px;">
@@ -70,6 +70,15 @@
                 <!-- Tracks -->
             </div>
         </div>
+    </div>
+
+    <!-- Draggable Spotify Player -->
+    <div class="audio-player-elite" id="spotifyPlayer" onmousedown="dragStart(event, 'spotifyPlayer')" style="bottom: auto; top: 100px; right: 30px; width: 352px; padding: 0; background: none; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+        <div class="player-header" style="background: rgba(10,10,10,0.9); padding: 0.8rem; border-radius: 12px 12px 0 0; margin: 0; border: 1px solid var(--glass-border);">
+            <span>SPOTIFY STATION</span>
+            <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="document.getElementById('spotifyPlayer').style.display='none'"></i>
+        </div>
+        <iframe data-testid="embed-iframe" style="border-radius:0 0 12px 12px; border: 1px solid var(--glass-border); border-top: none;" src="https://open.spotify.com/embed/album/10lhlXRUFrbC09tuhuxjy6?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
     <!-- Search Overlay -->
@@ -302,23 +311,33 @@
             `;
         }
 
-        // Draggable Audio Engine
+        // Draggable Logic for Multiple Players
+        let currentDragEl = null;
         let isDragging = false, offsetX, offsetY;
-        function dragStart(e) {
-            if(e.target.closest('.playback-controls') || e.target.closest('input')) return;
+
+        function dragStart(e, id) {
+            if(e.target.closest('.playback-controls') || e.target.closest('input') || e.target.tagName === 'IFRAME') return;
+            currentDragEl = document.getElementById(id);
             isDragging = true;
-            offsetX = e.clientX - elitePlayer.offsetLeft;
-            offsetY = e.clientY - elitePlayer.offsetTop;
+            offsetX = e.clientX - currentDragEl.offsetLeft;
+            offsetY = e.clientY - currentDragEl.offsetTop;
             document.onmousemove = dragMove;
             document.onmouseup = dragEnd;
         }
+
         function dragMove(e) {
-            if(!isDragging) return;
-            elitePlayer.style.left = (e.clientX - offsetX) + 'px';
-            elitePlayer.style.top = (e.clientY - offsetY) + 'px';
-            localStorage.setItem('playerPos', JSON.stringify({left: elitePlayer.style.left, top: elitePlayer.style.top}));
+            if(!isDragging || !currentDragEl) return;
+            currentDragEl.style.left = (e.clientX - offsetX) + 'px';
+            currentDragEl.style.top = (e.clientY - offsetY) + 'px';
+            currentDragEl.style.bottom = 'auto'; // Break fixed bottom if exists
+            
+            // Save individual positions
+            const positions = JSON.parse(localStorage.getItem('hubPositions') || '{}');
+            positions[currentDragEl.id] = { left: currentDragEl.style.left, top: currentDragEl.style.top };
+            localStorage.setItem('hubPositions', JSON.stringify(positions));
         }
-        function dragEnd() { isDragging = false; }
+
+        function dragEnd() { isDragging = false; currentDragEl = null; }
 
         function togglePlayer() { document.getElementById('elitePlayer').classList.toggle('active'); }
         function closePlayer() { document.getElementById('elitePlayer').classList.remove('active'); }
@@ -458,17 +477,19 @@
         }
 
         // Init
-        const pos = JSON.parse(localStorage.getItem('playerPos'));
-        if(pos) { 
-            const player = document.getElementById('elitePlayer');
-            if(player) {
-                player.style.left = pos.left; 
-                player.style.top = pos.top; 
+        const hubPos = JSON.parse(localStorage.getItem('hubPositions') || '{}');
+        Object.keys(hubPos).forEach(id => {
+            const el = document.getElementById(id);
+            if(el) {
+                el.style.left = hubPos[id].left;
+                el.style.top = hubPos[id].top;
+                el.style.bottom = 'auto';
             }
-        }
+        });
+
         renderProducts();
         updatePlaylistUI();
-        log("Ecosystème 1CL Master Refresh - Agent IA Administratif Prêt.");
+        log("Ecosystème 1CL Master Refresh - Agent IA Administratif & Spotify Prêt.");
     </script>
 </body>
 </html>
