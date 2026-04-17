@@ -120,12 +120,73 @@
                 <!-- Dynamic Stats -->
             </div>
 
+            <!-- Agent IA Administratif Module -->
             <div class="ems-module" style="margin-top:4rem;">
+                <div class="module-header"><span class="module-title">Agent IA Administratif - Fabrication de Contrats</span></div>
+                <div class="admin-form">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <input type="text" id="contractParty" class="admin-input" placeholder="Nom de la Partie B (Client/Fournisseur)">
+                        <select id="contractType" class="admin-input">
+                            <option value="client">Modèle Contrat Client Final</option>
+                            <option value="supplier">Modèle Contrat Fournisseur</option>
+                            <option value="transporter">Modèle Contrat Transporteur</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" onclick="fabricateContract()">Lancer la Fabrication IA</button>
+                </div>
+
+                <!-- Collapsible History Menu -->
+                <div class="collapsible-module">
+                    <div class="collapsible-header" onclick="toggleCollapsible()">
+                        <span>Journal des Contrats Générés</span>
+                        <i class="fa-solid fa-chevron-down" id="collapsibleIcon"></i>
+                    </div>
+                    <div class="collapsible-content" id="contractHistory">
+                        <div style="color:var(--text-dim); font-size: 0.7rem;">Aucun contrat généré dans cette session.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ems-module" style="margin-top:2rem;">
                 <div class="module-header"><span class="module-title">Journal de Bord (MPC Server Sync)</span></div>
                 <div class="workflow-log" id="workflowLog"></div>
             </div>
         </div>
     </section>
+
+    <!-- Contract Preview Modal (PDF Style) -->
+    <div class="contract-preview-modal" id="contractModal">
+        <i class="fa-solid fa-xmark overlay-close-white" onclick="closeContract()"></i>
+        <div class="contract-header">
+            <div>
+                <h1 style="margin:0;">CONTRAT DE PARTENARIAT</h1>
+                <p id="pdfDate">Date: --/--/----</p>
+            </div>
+            <div style="text-align:right;">
+                <h2 style="margin:0;">1CL COLLECTION</h2>
+                <p>Ecosystème EMS@Path</p>
+            </div>
+        </div>
+        <div class="contract-body" id="pdfBody">
+            <!-- Dynamic Content -->
+        </div>
+        <div class="signature-zone">
+            <div>
+                <p><b>POUR 1CL COLLECTION</b></p>
+                <div style="height:60px; border-bottom:1px solid #000; margin-bottom: 5px;"></div>
+                <span>Signature Autorisée (IA Agent)</span>
+            </div>
+            <div>
+                <p><b>POUR <span id="pdfPartyName">---------</span></b></p>
+                <div style="height:60px; border-bottom:1px solid #000; margin-bottom: 5px;"></div>
+                <span>Signature Requise</span>
+            </div>
+        </div>
+        <div class="pdf-btn-group">
+            <button class="btn-primary" style="background:#222; color:#fff;" onclick="simulateSignature()">Envoyer pour Signature (n8n Sync)</button>
+            <button class="btn-primary" onclick="window.print()">Imprimer PDF</button>
+        </div>
+    </div>
 
     <div class="container slogan-hero">
         <h3 style="color:var(--primary); font-size: 2rem;">"The Real Link"</h3>
@@ -318,6 +379,63 @@
             }
         }
 
+        function toggleCollapsible() {
+            const content = document.getElementById('contractHistory');
+            const icon = document.getElementById('collapsibleIcon');
+            content.classList.toggle('active');
+            icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        const contractTemplates = {
+            client: `
+                <div class="contract-clause"><span class="clause-title">Article 1 - Objet</span><p>Ce contrat définit les conditions de vente et de livraison des articles de la collection 1CL au client final.</p></div>
+                <div class="contract-clause"><span class="clause-title">Article 2 - Qualité</span><p>L'Ecosystème 1CL garantit l'utilisation de textiles premium (Giza Cotton, HeavyTech Fleece) tels que spécifiés dans le catalogue intelligent.</p></div>
+                <div class="contract-clause"><span class="clause-title">Article 3 - Livraison</span><p>La livraison est orchestrée via le hub Oneshoplink sous un délai de 5 à 7 jours ouvrés.</p></div>`,
+            supplier: `
+                <div class="contract-clause"><span class="clause-title">Article 1 - Approvisionnement</span><p>Le fournisseur s'engage à livrer les matières premières textiles conformément aux standards de l'Ecosystème 1CL.</p></div>
+                <div class="contract-clause"><span class="clause-title">Article 2 - Lead Time</span><p>Un délai de production de 30 jours est requis pour toute commande supérieure à 500 pièces.</p></div>
+                <div class="contract-clause"><span class="clause-title">Article 3 - Audit</span><p>1CL se réserve le droit d'auditer les ateliers de fabrication via l'interface EMS@Path.</p></div>`,
+            transporter: `
+                <div class="contract-clause"><span class="clause-title">Article 1 - Logistique</span><p>Le transporteur prend en charge le flux de marchandises du centre Oneshoplink vers les hubs internationaux.</p></div>
+                <div class="contract-clause"><span class="clause-title">Article 2 - Assurance</span><p>Toute cargaison est couverte par une assurance premium souscrite via le protocole MPC.</p></div>
+                <div class="contract-clause"><span class="clause-title">Article 3 - Tracking</span><p>Un suivi temps réel doit être fourni et injecté dans l'API 1CL toutes les 15 minutes.</p></div>`
+        };
+
+        function fabricateContract() {
+            const party = document.getElementById('contractParty').value || "Partie Anonyme";
+            const type = document.getElementById('contractType').value;
+            
+            log(`Fabrication IA lancée : Modèle ${type.toUpperCase()} pour ${party}...`);
+            
+            setTimeout(() => {
+                document.getElementById('pdfPartyName').innerText = party.toUpperCase();
+                document.getElementById('pdfDate').innerText = `Date: ${new Date().toLocaleDateString()}`;
+                document.getElementById('pdfBody').innerHTML = contractTemplates[type];
+                document.getElementById('contractModal').classList.add('active');
+                
+                // Add to history
+                const history = document.getElementById('contractHistory');
+                if(history.innerText.includes("Aucun")) history.innerHTML = '';
+                const entry = document.createElement('div');
+                entry.style.cssText = "display:flex; justify-content:space-between; padding:0.5rem; background:rgba(255,255,255,0.05); margin-bottom:5px; border-radius:4px; font-size:0.7rem;";
+                entry.innerHTML = `<span><b>${type.toUpperCase()}</b> - ${party}</span> <span style="color:var(--primary); cursor:pointer;" onclick="fabricateContract()">Revoir</span>`;
+                history.prepend(entry);
+                
+                log(`Contrat ${type} généré avec succès pour ${party}.`);
+            }, 1200);
+        }
+
+        function closeContract() { document.getElementById('contractModal').classList.remove('active'); }
+
+        function simulateSignature() {
+            log("Initialisation du workflow de signature via n8n...");
+            setTimeout(() => {
+                log("Webhook envoyé au Serveur MPC. Requête de signature transmise à la Partie B.", true);
+                alert("Flux n8n activé : Le contrat a été envoyé pour signature électronique.");
+                closeContract();
+            }, 800);
+        }
+
         function toggleSearch() { document.getElementById('searchOverlay').style.display = document.getElementById('searchOverlay').style.display === 'flex' ? 'none' : 'flex'; }
         
         function externalSearch(svc) {
@@ -328,6 +446,7 @@
 
         function log(msg) {
             const logDiv = document.getElementById('workflowLog');
+            if(!logDiv) return;
             const entry = document.createElement('div');
             entry.className = 'log-entry';
             entry.innerHTML = `<span>[${new Date().toLocaleTimeString()}]</span> ${msg}`;
@@ -340,10 +459,16 @@
 
         // Init
         const pos = JSON.parse(localStorage.getItem('playerPos'));
-        if(pos) { elitePlayer.style.left = pos.left; elitePlayer.style.top = pos.top; }
+        if(pos) { 
+            const player = document.getElementById('elitePlayer');
+            if(player) {
+                player.style.left = pos.left; 
+                player.style.top = pos.top; 
+            }
+        }
         renderProducts();
         updatePlaylistUI();
-        log("Ecosystème 1CL Master Refresh - Prêt.");
+        log("Ecosystème 1CL Master Refresh - Agent IA Administratif Prêt.");
     </script>
 </body>
 </html>
