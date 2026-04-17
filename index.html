@@ -249,14 +249,35 @@
 
     <script>
         const products = [
-            { id: 1, name: "Premium Gold Fleece", price: 180, cat: "PUL", img: "Jogging 1 CL gold black v.1.png", sku: "1CL-PUL-01", pieces: 250, history: "Launched Q1 2026. Silk-screen printing." },
-            { id: 2, name: "Onyx Street Veste", price: 250, cat: "VST", img: "Jogging 1CL gold black v.2.png", sku: "1CL-VST-01", pieces: 150, history: "Industrial-grade tech veste." },
-            { id: 3, name: "Heritage Tee Gold", price: 85, cat: "TSH", img: "T-shirt collection 1CL.gold.black.png", sku: "1CL-TSH-01", pieces: 500, history: "100% Giza cotton." },
-            { id: 4, name: "Classic 1CL Joggers", price: 140, cat: "JOG", img: "Jogging 1CL.gold.black.png", sku: "1CL-JOG-01", pieces: 300, history: "Engineered fit joggers." }
+            { id: 1, name: "Premium Gold Fleece", price: 180, cat: "PUL", img: "1CL-PUL-BLK1.jpg.png", sku: "1CL-PUL-01", pieces: 250, history: "Launched Q1 2026. Silk-screen printing." },
+            { id: 2, name: "Onyx Street Veste", price: 250, cat: "VST", img: "1CL-VST-BLK.jpg.png", sku: "1CL-VST-01", pieces: 150, history: "Industrial-grade tech veste." },
+            { id: 3, name: "Heritage Tee Gold", price: 85, cat: "TSH", img: "1CL-TSH-GLD.jpg.png", sku: "1CL-TSH-01", pieces: 500, history: "100% Giza cotton." },
+            { id: 4, name: "Classic 1CL Joggers", price: 140, cat: "JOG", img: "1CL-JOG-GLD.jpg.png", sku: "1CL-JOG-01", pieces: 300, history: "Engineered fit joggers." }
+        ];
+
+        const galleryAssets = [
+            "1CL-JOG-BLK.jpg.png", "1CL-JOG-GLD.jpg.png", "1CL-JOG-GRN.jpg.png", "1CL-JOG-RED.jpg.png",
+            "1CL-JOG-RED2.jpeg.png", "1CL-PUL-BEI.jpg.png", "1CL-PUL-BLK1.jpg.png", "1CL-PUL-GLD.jpg.png",
+            "1CL-PUL-GREY.jpg.png", "1CL-PUL-GREY1.jpg.png", "1CL-PUL-GREY2.jpg.png", "1CL-PUL-GRN1.jpg.png",
+            "1CL-PUL-GRN2.jpg.png", "1CL-PUL-Grn.jpg.png", "1CL-PUL-RED.jpg.png", "1CL-TSH-BLK.jpg.png",
+            "1CL-TSH-BLU.jpg.png", "1CL-TSH-GLD.jpg.png", "1CL-TSH-GRN.jpg.png", "1CL-TSH-WHI.jpg.png",
+            "1CL-VST-BLK.jpg.png", "1CL-VST-BLK2.jpg.png", "1CL-VST-GLD.jpg.png", "1CL-VST-GRN.jpg.png",
+            "1CL-VST-RED.jpg.png", "1CL-VST-WHI.jpg.png", "CL-JOG-WHI.jpg.png"
         ];
 
         for(let i=5; i<=28; i++) {
-            products.push({ id: i, name: `Heritage Piece #${100+i}`, price: 125, cat: ["PUL", "TSH", "JOG", "VST"][i % 4], img: products[i % 4].img, sku: `1CL-HER-${i}`, pieces: 100, history: "Standard asset." });
+            const asset = galleryAssets[i % galleryAssets.length];
+            const types = ["PUL", "TSH", "JOG", "VST"];
+            products.push({ 
+                id: i, 
+                name: `1CL Heritage Piece #${100+i}`, 
+                price: 125 + (i % 3)*40, 
+                cat: types[i % 4], 
+                img: asset, 
+                sku: `1CL-HER-${i}`, 
+                pieces: 100 + (i*10), 
+                history: "Heritage series garment." 
+            });
         }
 
         const playlist = [
