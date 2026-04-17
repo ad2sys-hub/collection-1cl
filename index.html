@@ -205,7 +205,14 @@
                 const key = el.getAttribute('data-t');
                 el.innerText = translations[lang][key] || el.innerText;
             });
+            
+            // Switch active buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.toLowerCase() === lang);
+            });
+
             renderProducts();
+            log(`Language switched to: ${lang.toUpperCase()}`);
         }
 
         function renderProducts() {
