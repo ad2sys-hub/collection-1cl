@@ -777,6 +777,85 @@ nav a:hover { color: var(--primary); }
     letter-spacing: 10px;
 }
 
+/* IYASON Biography Section */
+.bio-section {
+    padding: 8rem 0;
+    background: linear-gradient(to bottom, #000, rgba(212, 175, 55, 0.05));
+}
+
+.bio-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.bio-text {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    line-height: 2;
+    margin-top: 2rem;
+    font-family: 'Outfit', sans-serif;
+}
+
+.bio-signature {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary);
+    font-size: 1.5rem;
+    margin-top: 3rem;
+    letter-spacing: 5px;
+}
+
+/* Size Guide & Tables */
+.size-table-container {
+    margin-top: 2rem;
+    overflow-x: auto;
+}
+
+.size-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--glass-border);
+    margin-bottom: 2.5rem;
+}
+
+.size-table th, .size-table td {
+    padding: 1.2rem;
+    text-align: left;
+    border-bottom: 1px solid var(--glass-border);
+    font-size: 0.85rem;
+}
+
+.size-table th {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.size-table tr:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+.size-note {
+    font-size: 0.75rem;
+    color: var(--primary);
+    margin-top: -1.5rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Modal Enhancements for Size Guide */
+.size-guide-modal {
+    z-index: 4000;
+}
+
+@media (max-width: 768px) {
+    .size-table th, .size-table td { padding: 0.8rem; font-size: 0.75rem; }
+    .bio-text { font-size: 1rem; }
+}
+
 /* Agent IA Administratif & Contrats */
 .admin-form {
     display: flex;

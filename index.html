@@ -227,9 +227,71 @@
         </div>
     </div>
 
-    <div class="container slogan-hero">
-        <h3 style="color:var(--primary); font-size: 2rem;">"The Real Link"</h3>
-        <p style="color:var(--text-dim); max-width: 600px; margin: 1rem auto;">A message for our future clients: 1CL isn't just clothing, it's an orchestration of luxury and technology. Join the heritage.</p>
+    <!-- IYASON Official Biography Section -->
+    <section class="bio-section">
+        <div class="container bio-content">
+            <h2 style="color:var(--primary); letter-spacing:10px; font-size: 2.5rem;">IYASON</h2>
+            <p style="color:var(--text-dim); text-transform:uppercase; letter-spacing:5px; font-size:0.8rem;">The Visionary Behind 1CL</p>
+            <div class="bio-text">
+                Iyason est un artiste franco‑urbain dont l’univers mêle vérité brute, élégance sombre et storytelling introspectif. 
+                Reconnu pour sa plume tranchante et son sens du détail, il transforme chaque morceau en un récit authentique où se croisent loyauté, résilience et quête d’élévation.<br><br>
+                À travers sa marque 1CL — 1choplink, il étend son univers au-delà de la musique pour créer un véritable label culturel : un pont entre le réel, le style et la vision. 
+                Chaque pièce, chaque visuel, chaque mot porte la même philosophie : le vrai, sans compromis.<br><br>
+                Iyason — là où le vrai devient une marque.
+            </div>
+            <div class="bio-signature">EXCLUSIVE ECOSYSTEM SPONSOR</div>
+        </div>
+    </section>
+
+    <!-- Size Guide Modal (Premium) -->
+    <div class="modal size-guide-modal" id="sizeGuideModal">
+        <div class="modal-content" style="max-width:900px;">
+            <button class="modal-close" onclick="closeSizeGuide()">&times;</button>
+            <h2 style="color:var(--primary); text-align:center; margin-bottom: 2rem;">Catalogue des Tailles — 1CL</h2>
+            
+            <div class="size-table-container">
+                <h4 style="margin-bottom:1rem; color:#fff;">🧥 Hauts (T‑Shirt, Sweat, Hoodie, Pull)</h4>
+                <table class="size-table">
+                    <thead><tr><th>Taille</th><th>Poitrine (cm)</th><th>Longueur (cm)</th><th>Manches (cm)</th></tr></thead>
+                    <tbody>
+                        <tr><td>XS</td><td>47–49</td><td>64–66</td><td>59–61</td></tr>
+                        <tr><td>S</td><td>50–52</td><td>67–69</td><td>61–63</td></tr>
+                        <tr><td>M</td><td>53–55</td><td>70–72</td><td>63–65</td></tr>
+                        <tr><td>L</td><td>56–58</td><td>73–75</td><td>65–67</td></tr>
+                        <tr><td>XL</td><td>59–61</td><td>76–78</td><td>67–69</td></tr>
+                        <tr><td>XXL</td><td>62–65</td><td>79–81</td><td>69–71</td></tr>
+                    </tbody>
+                </table>
+                <div class="size-note">Notes premium 1CL : Coupe légèrement oversize, tissus 280–350g.</div>
+
+                <h4 style="margin-bottom:1rem; color:#fff;">👖 Bas (Jogging, Cargo, Pantalon Technique)</h4>
+                <table class="size-table">
+                    <thead><tr><th>Taille</th><th>Taille (cm)</th><th>Jambe (cm)</th><th>Hanche (cm)</th></tr></thead>
+                    <tbody>
+                        <tr><td>XS</td><td>68–72</td><td>96–98</td><td>86–90</td></tr>
+                        <tr><td>S</td><td>73–78</td><td>98–100</td><td>91–96</td></tr>
+                        <tr><td>M</td><td>79–84</td><td>100–102</td><td>97–102</td></tr>
+                        <tr><td>L</td><td>85–90</td><td>102–104</td><td>103–108</td></tr>
+                        <tr><td>XL</td><td>91–96</td><td>104–106</td><td>109–114</td></tr>
+                        <tr><td>XXL</td><td>97–104</td><td>106–108</td><td>115–120</td></tr>
+                    </tbody>
+                </table>
+                <div class="size-note">Notes premium 1CL : Coupe semi‑tapered, finitions métal doré.</div>
+
+                <h4 style="margin-bottom:1rem; color:#fff;">🧢 Accessoires (Gants 1CL)</h4>
+                <table class="size-table">
+                    <thead><tr><th>Taille</th><th>Long. Main (cm)</th><th>Paume (cm)</th></tr></thead>
+                    <tbody>
+                        <tr><td>S</td><td>17–18</td><td>8–9</td></tr>
+                        <tr><td>M</td><td>18–19</td><td>9–10</td></tr>
+                        <tr><td>L</td><td>19–20</td><td>10–11</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:0.8rem; color:var(--text-dim); margin-bottom:2rem;">
+                    Casquette : 54–62 cm (réglable) | Bonnet : 52–60 cm (extensible)
+                </p>
+            </div>
+        </div>
     </div>
 
     <section class="contact-section" id="contact" style="display:block;">
@@ -264,7 +326,7 @@
                 </div>
 
                 <div class="modal-actions">
-                    <button class="btn-primary" onclick="simulateWorkflow('n8n')">Trigger n8n Orchestration</button>
+                    <button class="btn-primary" onclick="openSizeGuide()" data-t="size_guide">Guide des Tailles</button>
                     <button class="btn-primary" style="background:#222; margin-top: 1rem;" onclick="simulateWorkflow('api')">Sync MPC API</button>
                 </div>
             </div>
@@ -272,37 +334,29 @@
     </div>
 
     <script>
-        const products = [
-            { id: 1, name: "Premium Gold Fleece", price: 180, cat: "PUL", img: "1CL-PUL-BLK1.jpg.png", sku: "1CL-PUL-01", pieces: 250, history: "Launched Q1 2026. Silk-screen printing." },
-            { id: 2, name: "Onyx Street Veste", price: 250, cat: "VST", img: "1CL-VST-BLK.jpg.png", sku: "1CL-VST-01", pieces: 150, history: "Industrial-grade tech veste." },
-            { id: 3, name: "Heritage Tee Gold", price: 85, cat: "TSH", img: "1CL-TSH-GLD.jpg.png", sku: "1CL-TSH-01", pieces: 500, history: "100% Giza cotton." },
-            { id: 4, name: "Classic 1CL Joggers", price: 140, cat: "JOG", img: "1CL-JOG-GLD.jpg.png", sku: "1CL-JOG-01", pieces: 300, history: "Engineered fit joggers." }
-        ];
+        const products = [];
+        const categories = ["PUL", "TSH", "JOG", "VST"];
+        const colors = ["BLK", "RED", "GRN", "GLD", "WHI", "BEL", "GREY"];
+        
+        categories.forEach(cat => {
+            colors.forEach(col => {
+                let filename = `1CL-${cat}-${col}.jpg.png`;
+                if(cat === "PUL" && col === "BLK") filename = "1CL-PUL-BLK1.jpg.png";
+                if(cat === "PUL" && col === "BEL") filename = "1CL-PUL-BEI.jpg.png";
+                if(cat === "JOG" && col === "BEL") filename = "1CL-JOG-BLK.jpg.png";
 
-        const galleryAssets = [
-            "1CL-JOG-BLK.jpg.png", "1CL-JOG-GLD.jpg.png", "1CL-JOG-GRN.jpg.png", "1CL-JOG-RED.jpg.png",
-            "1CL-JOG-RED2.jpeg.png", "1CL-PUL-BEI.jpg.png", "1CL-PUL-BLK1.jpg.png", "1CL-PUL-GLD.jpg.png",
-            "1CL-PUL-GREY.jpg.png", "1CL-PUL-GREY1.jpg.png", "1CL-PUL-GREY2.jpg.png", "1CL-PUL-GRN1.jpg.png",
-            "1CL-PUL-GRN2.jpg.png", "1CL-PUL-Grn.jpg.png", "1CL-PUL-RED.jpg.png", "1CL-TSH-BLK.jpg.png",
-            "1CL-TSH-BLU.jpg.png", "1CL-TSH-GLD.jpg.png", "1CL-TSH-GRN.jpg.png", "1CL-TSH-WHI.jpg.png",
-            "1CL-VST-BLK.jpg.png", "1CL-VST-BLK2.jpg.png", "1CL-VST-GLD.jpg.png", "1CL-VST-GRN.jpg.png",
-            "1CL-VST-RED.jpg.png", "1CL-VST-WHI.jpg.png", "CL-JOG-WHI.jpg.png"
-        ];
-
-        for(let i=5; i<=28; i++) {
-            const asset = galleryAssets[i % galleryAssets.length];
-            const types = ["PUL", "TSH", "JOG", "VST"];
-            products.push({ 
-                id: i, 
-                name: `1CL Heritage Piece #${100+i}`, 
-                price: 125 + (i % 3)*40, 
-                cat: types[i % 4], 
-                img: asset, 
-                sku: `1CL-HER-${i}`, 
-                pieces: 100 + (i*10), 
-                history: "Heritage series garment." 
+                products.push({
+                    id: products.length + 1,
+                    type: cat,
+                    name: `1CL ${cat} — Elite ${col}`,
+                    price: cat === "VST" ? 250 : (cat === "PUL" ? 180 : (cat === "JOG" ? 140 : 85)),
+                    img: filename,
+                    sku: `1CL-${cat}-${col}-2026`,
+                    pieces: Math.floor(Math.random() * 200) + 50,
+                    history: "High-density textiles, masterfully refined."
+                });
             });
-        }
+        });
 
         const playlist = [
             { title: "There Is Just a Simple Thing", artist: "Chawblick", file: "mp3/There Is Just a Simple Thing.mp3" },
@@ -315,8 +369,8 @@
         ];
 
         const translations = {
-            en: { filter_all: "All", modal_production: "Production", contact_title: "Contact Hub", nav_collection: "Collection", nav_contact: "Contact", cinema_title: "1CL Cinema" },
-            fr: { filter_all: "Tous", modal_production: "Production", contact_title: "Hub Contact", nav_collection: "Collection", nav_contact: "Contact", cinema_title: "Cinéma 1CL" }
+            en: { filter_all: "All", modal_production: "Production", contact_title: "Contact Hub", nav_collection: "Collection", nav_contact: "Contact", cinema_title: "1CL Cinema", size_guide: "Size Guide" },
+            fr: { filter_all: "Tous", modal_production: "Production", contact_title: "Hub Contact", nav_collection: "Collection", nav_contact: "Contact", cinema_title: "Cinéma 1CL", size_guide: "Guide des Tailles" }
         };
 
         let currentLang = 'en';
@@ -340,7 +394,10 @@
             log(sidebar.classList.contains('active') ? "EMS Dashboard HUD Activated." : "HUD Dashboard Restricted.");
         }
 
-        function renderProducts() {
+        function openSizeGuide() { document.getElementById('sizeGuideModal').classList.add('active'); }
+        function closeSizeGuide() { document.getElementById('sizeGuideModal').classList.remove('active'); }
+
+        function renderProducts(filter = 'all') {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
             products.forEach(p => {
@@ -558,7 +615,7 @@
 
         renderProducts();
         updatePlaylistUI();
-        log("Ecosystème 1CL Master Refresh - Hub Media & Sidebar Unifiés.");
+        log("Ecosystème 1CL Master Refresh - 28 Pièces & Bio IYASON OK.");
     </script>
 </body>
 </html>
