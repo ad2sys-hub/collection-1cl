@@ -549,15 +549,16 @@ nav a:hover { color: var(--primary); }
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 360px;
+    width: 380px;
     background: rgba(10, 10, 10, 0.98);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(40px);
     border: 1px solid var(--glass-border);
-    border-radius: 24px;
+    border-radius: 30px;
     z-index: 2000;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.9);
+    box-shadow: 0 50px 100px rgba(0,0,0,0.9);
     cursor: move;
     overflow: hidden;
+    transition: var(--transition);
 }
 
 .hub-tabs {
@@ -568,50 +569,116 @@ nav a:hover { color: var(--primary); }
 
 .tab-btn {
     flex: 1;
-    padding: 1rem;
+    padding: 1.2rem;
     background: none;
     border: none;
     color: var(--text-dim);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
     cursor: pointer;
     transition: var(--transition);
-    letter-spacing: 1px;
+    letter-spacing: 2px;
 }
 
 .tab-btn.active {
     color: var(--primary);
-    background: rgba(212, 175, 55, 0.05);
+    background: rgba(212, 175, 55, 0.08);
     border-bottom: 2px solid var(--primary);
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
-.hub-content { padding: 1.5rem; }
+.hub-content { padding: 2rem; }
 .media-view { display: none; }
 .media-view.active { display: block; }
 
-/* Existing Player Components (Re-styled for Hub) */
-.track-info-elite { text-align: center; margin-bottom: 1.5rem; }
-.track-name { font-size: 0.9rem; font-weight: 700; color: #fff; display: block; }
-.track-artist { font-size: 0.7rem; color: var(--text-dim); }
+/* Audio Hub Typography & Glow */
+.track-info-elite { 
+    text-align: center; 
+    margin-bottom: 2rem; 
+}
+
+.track-name { 
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem; 
+    font-weight: 700; 
+    color: var(--text-light); 
+    display: block; 
+    letter-spacing: 1px;
+    transition: var(--transition);
+}
+
+/* Elite Playing Glow Effect */
+.media-center-hub.is-playing .track-name {
+    color: var(--primary);
+    text-shadow: 0 0 15px var(--primary);
+    animation: goldPulse 2s infinite ease-in-out;
+}
+
+@keyframes goldPulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.02); opacity: 1; text-shadow: 0 0 25px var(--primary); }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+.track-artist { 
+    font-size: 0.75rem; 
+    color: var(--text-dim); 
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-top: 0.5rem;
+    display: block;
+}
 
 .playback-controls {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    gap: 2rem;
+    margin-bottom: 2rem;
 }
 
-.btn-icon { background: none; border: none; color: #fff; cursor: pointer; font-size: 1.2rem; transition: var(--transition); }
-.btn-icon:hover { color: var(--primary); }
-.btn-play-large { font-size: 2.2rem; color: var(--primary); }
+/* Control Button Enhancements */
+.btn-icon { 
+    background: none; 
+    border: none; 
+    color: var(--text-light); 
+    cursor: pointer; 
+    font-size: 1.4rem; 
+    transition: var(--transition);
+    opacity: 0.7;
+}
+
+.btn-icon:hover { 
+    color: var(--primary); 
+    opacity: 1;
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 8px var(--primary));
+}
+
+.btn-icon:active {
+    transform: scale(0.9);
+}
+
+.btn-play-large { 
+    font-size: 2.8rem; 
+    color: var(--primary); 
+    opacity: 1;
+}
+
+.btn-play-large:hover {
+    transform: scale(1.15);
+}
 
 .volume-container {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 0 1rem;
+    gap: 1.5rem;
+    padding: 0 1.5rem;
+    background: rgba(255,255,255,0.02);
+    border-radius: 50px;
+    height: 40px;
 }
 
 @media (max-width: 850px) {

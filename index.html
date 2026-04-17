@@ -424,16 +424,20 @@
             updatePlaylistUI();
             audio.play();
             document.getElementById('elitePlayIcon').className = 'fa-solid fa-circle-pause';
+            document.getElementById('mediaHub').classList.add('is-playing');
         }
 
         function audioAction(type) {
+            const hub = document.getElementById('mediaHub');
             if(type === 'play') {
                 if(audio.paused) { 
                     if(trackIdx === -1) loadTrack(0); else audio.play();
                     document.getElementById('elitePlayIcon').className = 'fa-solid fa-circle-pause';
+                    hub.classList.add('is-playing');
                 } else { 
                     audio.pause();
                     document.getElementById('elitePlayIcon').className = 'fa-solid fa-circle-play';
+                    hub.classList.remove('is-playing');
                 }
             } else if(type === 'next') {
                 loadTrack((trackIdx + 1) % playlist.length);
